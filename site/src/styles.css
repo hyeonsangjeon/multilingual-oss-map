@@ -181,9 +181,10 @@ section { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
   box-shadow: var(--shadow);
 }
 .map-holder svg { width: 100%; height: auto; display: block; }
-.map-holder .country { stroke: var(--bg); stroke-width: 0.4; transition: opacity 0.5s, fill 0.5s; cursor: pointer; }
+.map-holder .country { stroke: var(--bg); stroke-width: 0.4; transition: opacity 0.5s, fill 0.5s, stroke 0.3s, stroke-width 0.3s; cursor: pointer; }
 .map-holder .country.nodata { fill: #172032; cursor: default; }
-.map-holder .country.dim { opacity: 0.25; }
+.map-holder .country.dim { opacity: 0.22; }
+.map-holder .country.hl { stroke: #ffffff; stroke-width: 2.4; opacity: 1; }
 .map-holder .graticule { fill: none; stroke: var(--line-soft); stroke-width: 0.5; }
 .map-holder .sphere { fill: #0d1524; stroke: var(--line); stroke-width: 0.6; }
 /* narrow screens: the map is a non-interactive overview above the tappable ranking */

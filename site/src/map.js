@@ -122,7 +122,10 @@ function updateMap(s, values) {
       return v ? colorScale(v.count) : "#172032";
     })
     .classed("nodata", (d) => !values.get(d.id))
-    .classed("dim", (d) => (selSet ? !selSet.has(d.id) : false));
+    .classed("dim", (d) => (selSet ? !selSet.has(d.id) : false))
+    .classed("hl", (d) => (selSet ? selSet.has(d.id) : false));
+  // lift the highlighted regions above their neighbours so the outline isn't clipped
+  if (selSet) select(holder).selectAll("path.country.hl").raise();
 }
 
 /* ---------------- BARS (shown below the map on narrow screens) ---------------- */
@@ -130,7 +133,7 @@ function ensureBars() {
   if (barsBox) return;
   barsBox = select(holder).append("div").attr("class", "map-bars");
   barsBox.append("div").attr("class", "bars-hint")
-    .text("Regions above are coloured by their top language. Tap a bar for details \u2193");
+    .text("Regions above are coloured by their top language. Tap a bar to spotlight it on the map \u2191");
   barsBox.append("div").attr("class", "bars");
 }
 function updateBars(s) {
@@ -146,8 +149,8 @@ function updateBars(s) {
       r.append("div").append("div").attr("class", "bt");
       r.append("div").attr("class", "bv");
       r.on("click", (e, d) => {
-        setState({ selectedLang: d.lang });
-        document.getElementById("detail-section").scrollIntoView({ behavior: "smooth" });
+        // display-only map above reacts to the tap; detail panel (below) updates too
+        setState({ selectedLang: d.lang, mapInteracted: true });
       });
       return r;
     })
