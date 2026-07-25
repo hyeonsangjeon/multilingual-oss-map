@@ -7,8 +7,8 @@ This file lets the build resume after an interruption. Each phase is committed o
 | Phase | Description | State |
 | --- | --- | --- |
 | 0 | Repo scaffold | ✅ done |
-| 1 | Dataset schema + access notes | ⏳ in progress |
-| 2 | Aggregation pipeline (`scripts/aggregate.py`) | ⬜ pending |
+| 1 | Dataset schema + access notes | ✅ done |
+| 2 | Aggregation pipeline (`scripts/aggregate.py`) | ⏳ in progress |
 | 3 | Language→region mapping | ⬜ pending |
 | 4 | Map + charts (Vite/D3) | ⬜ pending |
 | 5 | Design (dark, colorblind-safe, mobile) | ⬜ pending |
@@ -33,3 +33,6 @@ This file lets the build resume after an interruption. Each phase is committed o
 - **PHASE 0** — Scaffolded repo `multilingual-oss-map`: `.gitignore` (excludes raw parquet),
   MIT `LICENSE` + CC0 data note, README draft with required keywords, `scripts/download_data.sh`,
   `docs/`. Verified dataset access and downloaded all shards.
+- **PHASE 1** — Verified real schema via DuckDB over all shards (matches dataset README totals
+  exactly: 80,657,333 rows / 40,817,528 repos). Wrote `docs/schema-notes.md`. Found the published
+  aggregate = all-three-agree, and CJK over-firing at low strictness (decisions D6/D7).
