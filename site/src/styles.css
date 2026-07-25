@@ -66,6 +66,17 @@ button:focus-visible { outline-offset: 3px; }
   gap: 14px;
 }
 .brand { font-weight: 700; color: var(--text); font-family: var(--mono); font-size: 0.95rem; }
+.topbar-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.gh-star {
+  display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px;
+  border: 1px solid var(--line); border-radius: 8px; background: var(--bg-elev);
+  color: var(--text-dim); font-size: 0.82rem; font-weight: 600; line-height: 1;
+  text-decoration: none; white-space: nowrap; flex: none;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.gh-star:hover { border-color: var(--accent); color: var(--accent); background: var(--bg-elev2); }
+.gh-star:focus-visible { outline: 2px solid var(--accent2); outline-offset: 2px; }
+.gh-star svg { width: 15px; height: 15px; fill: currentColor; flex: none; }
 .topbar-controls { display: flex; align-items: center; gap: 8px; }
 
 /* ---------- layout ---------- */
@@ -315,6 +326,10 @@ section { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
   .hero { padding-top: 40px; }
   .section { padding-top: 48px; }
   .topbar .brand { font-size: 0.82rem; }
+  .topbar-inner { padding-left: 14px; padding-right: 14px; gap: 8px; }
+  .topbar-left { gap: 8px; }
+  .gh-star { padding: 5px 7px; }
+  .gh-star .gh-star-label { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
