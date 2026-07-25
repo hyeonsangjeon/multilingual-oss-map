@@ -10,8 +10,8 @@ This file lets the build resume after an interruption. Each phase is committed o
 | 1 | Dataset schema + access notes | ✅ done |
 | 2 | Aggregation pipeline (`scripts/aggregate.py`) | ✅ done |
 | 3 | Language→region mapping | ✅ done |
-| 4 | Map + charts (Vite/D3) | ⏳ in progress |
-| 5 | Design (dark, colorblind-safe, mobile) | ⬜ pending |
+| 4 | Map + charts (Vite/D3) | ✅ done |
+| 5 | Design (dark, colorblind-safe, mobile) | ⏳ in progress |
 | 6 | Docs + Pages deployment | ⬜ pending |
 | 7 | Self-check | ⬜ pending |
 
@@ -42,3 +42,10 @@ This file lets the build resume after an interruption. Each phase is committed o
 - **PHASE 3** — Hand-authored `scripts/build_regions.py` → `lang-regions.json` (83 languages→151
   countries, ISO-validated, with `broad`/`regional` flags + rationale) and `iso-countries.json`
   (alpha3→numeric/name for TopoJSON). Wrote `docs/language-region-mapping.md` (method + limits).
+- **PHASE 4** — Built the Vite/D3 dashboard in `site/`: pub/sub `store`, shared `controls`
+  (strictness dial + source tabs), `hero` (dynamic #1 cards + "sharpest example"), `map`
+  (Natural-Earth choropleth, Viridis log scale, mobile bar fallback), `slope` (sortable README↔issue
+  dumbbell), `detail` (3-source counts, classifier-agreement split, primary langs, star quantiles),
+  `timeseries` (stacked area by creation year), `methodology` (§3 constraints), `footer`. Build OK
+  (JS 400 kB / 121 kB gz, CSS 10 kB). Rendered headless (Playwright) with **zero console/page
+  errors**; reviewed desktop + 390 px mobile. Polished the choropleth colour domain (D8).

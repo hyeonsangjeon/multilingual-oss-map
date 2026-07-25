@@ -1,0 +1,20 @@
+{
+  "name": "multilingual-oss-map",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Interactive language map of multilingual open source (GitHub Multilingual Repositories Dataset).",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 4173 --host"
+  },
+  "devDependencies": {
+    "vite": "^5.4.10"
+  },
+  "dependencies": {
+    "d3": "^7.9.0",
+    "topojson-client": "^3.1.0",
+    "world-atlas": "^2.0.2"
+  }
+}

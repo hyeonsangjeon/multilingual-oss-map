@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>multilingual-oss-map — the language map of multilingual open source</title>
+    <meta
+      name="description"
+      content="An interactive language map of multilingual open source, built from the GitHub Multilingual Repositories Dataset: non-English README vs issue vs pull-request language across 40M+ repositories."
+    />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%97%BA%EF%B8%8F%3C/text%3E%3C/svg%3E" />
+  </head>
+  <body>
+    <div id="app">
+      <!-- Sticky global controls -->
+      <header class="topbar" id="topbar">
+        <div class="topbar-inner">
+          <a class="brand" href="#hero">multilingual-oss-map</a>
+          <div class="topbar-controls" id="topbar-controls"><!-- strictness (compact) injected --></div>
+        </div>
+      </header>
+
+      <!-- ① HERO -->
+      <section class="hero" id="hero">
+        <p class="eyebrow">A language map of multilingual open source</p>
+        <h1 class="hero-q">
+          Do developers write their docs in English,<br /><em>but talk in their mother tongue?</em>
+        </h1>
+        <p class="hero-sub" id="hero-sub"></p>
+        <div class="stat-cards" id="stat-cards"></div>
+        <div class="strictness-block" id="strictness-block"></div>
+        <p class="hero-hint" id="hero-hint"></p>
+      </section>
+
+      <!-- ② MAP -->
+      <section class="section" id="map-section">
+        <div class="section-head">
+          <h2>Where non-English open source lives — a <em>language</em> map</h2>
+          <p class="section-sub">
+            Each region is shaded by the non-English language with the most repositories there, for
+            the selected text source. Switch source and watch the map change. English is excluded
+            (it is global — and absent from the source data).
+          </p>
+        </div>
+        <div class="source-tabs" id="source-tabs" role="tablist" aria-label="Text source"></div>
+        <div class="map-wrap">
+          <div class="map-holder" id="map-holder"></div>
+          <div class="map-legend" id="map-legend"></div>
+        </div>
+        <p class="caption" id="map-caption"></p>
+      </section>
+
+      <!-- ③ ASYMMETRY / SLOPE -->
+      <section class="section" id="slope-section">
+        <div class="section-head">
+          <h2>The asymmetry: README rank ↔ Issue rank</h2>
+          <p class="section-sub">
+            Each line links a language's rank in READMEs to its rank in issues. Lines that cross
+            steeply are the story: documented in one register, discussed in another.
+          </p>
+        </div>
+        <div class="slope-controls" id="slope-controls"></div>
+        <div class="slope-holder" id="slope-holder"></div>
+        <p class="caption" id="slope-caption"></p>
+      </section>
+
+      <!-- ④ LANGUAGE DETAIL -->
+      <section class="section" id="detail-section">
+        <div class="section-head">
+          <h2>Language detail</h2>
+          <p class="section-sub">
+            Pick a language on the map, the slope chart, or here. Numbers reflect the current
+            strictness. Medians are shown because star counts are extremely long-tailed.
+          </p>
+        </div>
+        <div class="detail-picker" id="detail-picker"></div>
+        <div class="detail-panel" id="detail-panel"></div>
+      </section>
+
+      <!-- ⑤ TIMESERIES -->
+      <section class="section" id="ts-section">
+        <div class="section-head">
+          <h2>Is non-English open source growing?</h2>
+          <p class="section-sub">
+            Repositories per creation year, by classified language, for the current source and
+            strictness. Recent years are undercounted: newer repos have fewer issues/PRs to classify.
+          </p>
+        </div>
+        <div class="ts-holder" id="ts-holder"></div>
+        <p class="caption" id="ts-caption"></p>
+      </section>
+
+      <!-- ⑥ METHODOLOGY -->
+      <section class="section methodology" id="methodology">
+        <div class="section-head"><h2>Method &amp; limitations</h2></div>
+        <div class="method-grid" id="method-grid"></div>
+      </section>
+
+      <footer class="footer" id="footer"></footer>
+    </div>
+
+    <div class="tooltip" id="tooltip" role="status" aria-live="polite"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

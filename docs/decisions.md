@@ -49,3 +49,12 @@ the source shards (dedup-safe here because we count `DISTINCT classifier`).
 A repository can be classified as more than one language (classifier disagreement, or genuinely
 mixed). So Σ(per-language repo counts) ≥ distinct repositories, especially at strictness 1. Documented
 in methodology; never presented as mutually exclusive shares.
+
+## D8 — Choropleth colour domain uses the visible min–max, not [1, max]
+The per-country dominant-language counts are heavily right-skewed (≈600 to 3.7 M). A log colour
+scale anchored at 1 pushed every shaded country into the bright half of Viridis, so the map read as
+"all yellow" and lost its signal. Fixed the sequential-log domain to the **actually shaded** values
+(`[min, max]`, with a mild floor of `max/6000` so a single tiny outlier can't wash the ramp out).
+This is a purely visual encoding change — the underlying counts, tooltips and captions are
+unchanged — and it makes the README↔issue source switch legible (spec §5 aesthetics, below the
+honesty/hard-constraint tiers of §8). Colour ramp remains colour-blind-safe Viridis (spec §9).
