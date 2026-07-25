@@ -83,6 +83,7 @@ function renderPanel(s) {
       ${region ? `<span class="badge">${region.broad ? "spoken across many countries" : region.regional ? "regional language" : "national language"}</span>` : ""}
       ${movement}
     </div>
+    <p class="detail-guide">Showing <strong>${name}</strong> — pick another language from the chips above, or click a region on the map.</p>
     <div class="detail-grid">
       <div class="card">
         <h3>Across text sources · strictness ${s.strictness}</h3>

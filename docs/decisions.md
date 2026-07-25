@@ -72,3 +72,13 @@ overriding the original spec §3.4 default of 2-of-3 (recorded in D6). Rationale
 The toggle still exposes ≥1 / 2-of-3 / all-3 (the honesty dial D6 asks for) and the labels now mark
 all-3 as the default; 2-of-3 is relabelled "balanced" (no longer "default"). The 2-of-3 correctness
 cross-check against the dataset README's "≥ two classifiers" aggregate is unchanged.
+
+## D10 — Detail panel starts on Korean; map stays whole until clicked
+On first load the language-detail panel was empty, which read as broken. **Decision:** initialise
+`selectedLang = "KO"` so the panel is populated from the start with the site's headline case
+(Korean: #5 in READMEs, #1 in issues), while a persistent guide line and the always-visible chips
+make it clear any language can be chosen. To avoid a side effect — the choropleth dims every country
+except the selected language's regions — we gate that dimming behind a new `mapInteracted` flag that
+is set **only** by a direct map click. So the map loads whole (important now that it is also the
+mobile centrepiece, D-mobile), and click-to-focus still works on desktop. Aesthetics/narrative,
+below the honesty tier of §8.

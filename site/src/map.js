@@ -107,14 +107,15 @@ function onClick(event, d) {
   const s = getState();
   const v = countryValues(s.source, s.strictness).get(d.id);
   if (v) {
-    setState({ selectedLang: v.lang });
+    setState({ selectedLang: v.lang, mapInteracted: true });
     document.getElementById("detail-section").scrollIntoView({ behavior: "smooth" });
   }
 }
 
 function updateMap(s, values) {
   const sel = s.selectedLang;
-  const selSet = sel ? countriesForLang(sel) : null;
+  // Only dim to a selection once the user has clicked the map — keep it whole on load.
+  const selSet = s.mapInteracted && sel ? countriesForLang(sel) : null;
   select(holder).selectAll("path.country")
     .attr("fill", (d) => {
       const v = values.get(d.id);

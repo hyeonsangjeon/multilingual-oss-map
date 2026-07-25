@@ -242,6 +242,7 @@ section { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
 }
 .card h3 { margin: 0 0 12px; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-faint); font-weight: 650; }
 .detail-title { display: flex; align-items: baseline; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+.detail-guide { color: var(--text-faint); font-size: 0.85rem; margin: -6px 0 16px; }
 .detail-title .dt-name { font-size: 1.6rem; font-weight: 750; }
 .detail-title .dt-code { font-family: var(--mono); color: var(--text-faint); }
 .detail-title .badge { font-size: 0.72rem; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line); color: var(--text-dim); }
