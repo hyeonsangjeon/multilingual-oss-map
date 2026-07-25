@@ -66,3 +66,24 @@ This file lets the build resume after an interruption. Each phase is committed o
   issues = 127,993); all four disclaimers shipped in the bundle; 375 px mobile with 0 overflow; live
   Pages URL 200 with zero console/page errors on load + interaction. Three visual passes done
   (colour-domain fix in pass 1, verified in 2, live site confirmed in 3).
+
+## Post-launch polish pass (3 items, each committed separately)
+
+All shipped to the live site (Pages Actions deploy succeeded) and screenshot-verified on desktop
+(1300px) and mobile (375px); zero console/page errors on load and on interaction.
+
+- **P1 — Map stays visible on mobile** (`c82a92f`). Narrow screens no longer *replace* the
+  choropleth with a bar ranking. The map is always rendered (scaled to width, non-interactive
+  overview) and the tappable ranking is appended **below** it. Verified at 375px: map 317×165,
+  ranking below, 0 horizontal overflow. (`site/src/map.js`, `site/src/styles.css`)
+- **P2 — Default strictness = all-3** (`a99da41`). Was 2-of-3. all-3 matches GitHub's published
+  tables, is unaffected by CJK over-firing, and gives the truest/sharpest headline (Korean #5 in
+  READMEs → **#1 in issues, 127,993**; issues hero card is Korean, not the Chinese artefact).
+  Labels re-marked (all-3 = default, 2-of-3 = "balanced"); rationale in `docs/decisions.md` D9.
+  (`site/src/store.js`, `scripts/aggregate.py` → `site/data/meta.json`, `methodology.js`,
+  `docs/methodology.md`)
+- **P3 — Detail panel pre-selects Korean** (`69883f9`). Panel is filled on first load with the
+  headline case; a persistent guide line + always-visible chips keep it clear any language can be
+  chosen. Added a `mapInteracted` flag so the choropleth only dims-to-selection after a direct map
+  click (0/177 dimmed on load; click-to-focus still works). `docs/decisions.md` D10.
+  (`site/src/store.js`, `site/src/map.js`, `site/src/detail.js`, `site/src/styles.css`)
