@@ -111,3 +111,28 @@ recaptured at **all‑3** strictness.
   recomputed at all‑3 from `lang-totals.json` → Korean #1 in issues, matching the headline). The
   remaining "2‑of‑3" strings are legitimate (toggle labels, the scale definition, the decision log's
   D6→D9 history, the input spec, and this changelog).
+
+## Colour-encoding redesign + README pass (each item committed separately)
+
+Screenshot- and CVD-verified. The map's colour previously came from a single continuous
+Viridis-by-repo-count scale (D8), so colour encoded *count*, not *language*, and the map read as one
+green→yellow wash. Reworked per the `수정지시_지도색상_README-1.md` spec; supersedes the PHASE 4/5
+"Viridis" map description above.
+
+- **A — Language = hue, volume = discrete lightness** (`39e6b3b`, `1225546`). New
+  `site/src/palette.js` fixes the top-8 mappable languages (by all-3 README rank: PT, ES, RU, FR, KO,
+  TR, ID, ZH) to distinct Okabe–Ito-based hues, reused across every source tab and strictness so a
+  language never changes colour; everything else is a neutral "Other" grey. `site/src/map.js` fills
+  each country with `shadeHex(hueForLang, binScale(count))` where `binScale` is a `scaleQuantile`
+  (the count distribution is too skewed for equal-width bins). Legend rebuilt as clickable language
+  chips + a lightness ramp; tooltip and ranking bars follow the same encoding; borders lifted to a
+  faint light stroke. Verified desktop + 375px and under deuteranopia/protanopia (headline
+  comparisons — PT vs ES in South America, ZH vs KO in East Asia — stay distinct). D11.
+- **Docs** (`002ce99`). `docs/decisions.md` D11 (rationale, Okabe–Ito choice, reddish-purple →
+  magenta/red substitution, CVD limitation) + `docs/methodology.md` §5 colour-encoding section.
+- **README** (`d07c237` B-4 split first paragraph; `64a56bb` B-1 unofficial/not-affiliated notice;
+  `a62678f` B-2 License/Pages/stars badges + one-line star CTA; `5cc66c3` B-3 dataset announcement
+  blog link).
+- **Figures re-shot at the new palette** (`b2d75e8`, spec C-3/B-5). `docs/hero-loop.gif` (185 KB,
+  < 3 MB so it stays a GIF), `docs/korea-tooltip.png`, `docs/asymmetry.png`. Also refreshed
+  `docs/self-check.md`'s now-stale "Viridis" / mobile-fallback lines.

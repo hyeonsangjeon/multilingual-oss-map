@@ -67,12 +67,14 @@ The methodology section renders these as first‑class cards; the map legend and
 
 ## 5. Responsive / accessibility
 
-- **375 px (iPhone):** horizontal overflow = **0 px**, no page errors. The map degrades to a
-  horizontal **bar ranking** (Portuguese 3.7 M → Dutch 88 K) using the same colour scale.
+- **375 px (iPhone):** horizontal overflow = **0 px**, no page errors. The map is shown scaled to
+  fit (non‑interactive) **above** a horizontal **bar ranking** (Portuguese 3.0 M → Dutch 65 K), both
+  drawn with the categorical language palette; tap a bar to spotlight it on the map.
 - **390 px / 1300 px** reviewed by screenshot; layout reflows (single‑column cards, wrapped tabs).
 - `:focus-visible` outlines on all controls; `prefers-reduced-motion` disables transitions.
-- Colour encoding is colour‑blind‑safe **Viridis** (sequential); the categorical time series pairs
-  colour with a text legend and hover labels.
+- Colour encoding is **categorical** — hue = language identity (an Okabe–Ito‑based, colour‑blind‑safe
+  palette, top‑8 languages + a neutral "Other") and discrete quantile **lightness** = repository
+  volume (decision D11); verified under deuteranopia/protanopia simulation.
 
 ## 6. Visual review (3 passes, with polish)
 
