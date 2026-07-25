@@ -9,8 +9,8 @@ This file lets the build resume after an interruption. Each phase is committed o
 | 0 | Repo scaffold | ✅ done |
 | 1 | Dataset schema + access notes | ✅ done |
 | 2 | Aggregation pipeline (`scripts/aggregate.py`) | ✅ done |
-| 3 | Language→region mapping | ⏳ in progress |
-| 4 | Map + charts (Vite/D3) | ⬜ pending |
+| 3 | Language→region mapping | ✅ done |
+| 4 | Map + charts (Vite/D3) | ⏳ in progress |
 | 5 | Design (dark, colorblind-safe, mobile) | ⬜ pending |
 | 6 | Docs + Pages deployment | ⬜ pending |
 | 7 | Self-check | ⬜ pending |
@@ -39,3 +39,6 @@ This file lets the build resume after an interruption. Each phase is committed o
 - **PHASE 2** — Wrote `scripts/aggregate.py` (DuckDB). Validates source totals, materializes a
   47M-row consensus table, emits 4 deterministic JSON files in ~23 s. Verified **byte-identical**
   reruns and spot-checked values against GitHub's published tables (issue s3 KO=127,993 exact).
+- **PHASE 3** — Hand-authored `scripts/build_regions.py` → `lang-regions.json` (83 languages→151
+  countries, ISO-validated, with `broad`/`regional` flags + rationale) and `iso-countries.json`
+  (alpha3→numeric/name for TopoJSON). Wrote `docs/language-region-mapping.md` (method + limits).
