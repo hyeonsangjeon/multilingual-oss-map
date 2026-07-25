@@ -67,6 +67,7 @@ A **classifier‑strictness** dial (≥1 / 2‑of‑3 / all‑3, defaulting to *
 ## Data source
 
 - **Dataset:** [GitHub Multilingual Repositories Dataset](https://github.com/github/multilingual-repositories)
+- **Announcement:** [Accelerating researchers and developers building multilingual AI with a new open dataset](https://github.blog/ai-and-ml/llms/accelerating-researchers-and-developers-building-multilingual-ai-with-a-new-open-dataset/) — The GitHub Blog, 2026-06-15
 - **License:** CC0-1.0 (public domain)
 - **Scale:** 80,657,333 classification rows across 40,817,528 repositories
 - **Classifiers:** fastText, gcld3, lingua-py (kept separate — see the strictness toggle)
