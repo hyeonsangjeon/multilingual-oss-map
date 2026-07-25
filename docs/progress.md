@@ -13,7 +13,9 @@ This file lets the build resume after an interruption. Each phase is committed o
 | 4 | Map + charts (Vite/D3) | ✅ done |
 | 5 | Design (dark, colorblind-safe, mobile) | ✅ done |
 | 6 | Docs + Pages deployment | ✅ done |
-| 7 | Self-check | ⏳ in progress |
+| 7 | Self-check | ✅ done |
+
+**All phases complete.** Live: <https://hyeonsangjeon.github.io/multilingual-oss-map/>
 
 ## Environment (verified)
 
@@ -58,3 +60,9 @@ This file lets the build resume after an interruption. Each phase is committed o
   explore"). Added `.github/workflows/deploy.yml` (Actions: `npm ci` + `vite build` of `site/`,
   base `./`, upload `site/dist`, deploy‑pages). Enabled Pages (build type = GitHub Actions) and set
   the repo homepage to the Pages URL. About + all seven topics confirmed present.
+- **PHASE 7** — Wrote `docs/self-check.md`. Verified: byte-identical idempotent re-run (80,657,333
+  rows); strictness monotonicity (428 pairs, 0 violations); ranks contiguous; the three sources give
+  different rankings; **exact** cross-checks vs GitHub's published all-3 tables (PT/KO README, KO
+  issues = 127,993); all four disclaimers shipped in the bundle; 375 px mobile with 0 overflow; live
+  Pages URL 200 with zero console/page errors on load + interaction. Three visual passes done
+  (colour-domain fix in pass 1, verified in 2, live site confirmed in 3).
