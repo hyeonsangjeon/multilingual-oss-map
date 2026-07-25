@@ -11,8 +11,8 @@ This file lets the build resume after an interruption. Each phase is committed o
 | 2 | Aggregation pipeline (`scripts/aggregate.py`) | ✅ done |
 | 3 | Language→region mapping | ✅ done |
 | 4 | Map + charts (Vite/D3) | ✅ done |
-| 5 | Design (dark, colorblind-safe, mobile) | ⏳ in progress |
-| 6 | Docs + Pages deployment | ⬜ pending |
+| 5 | Design (dark, colorblind-safe, mobile) | ✅ done |
+| 6 | Docs + Pages deployment | ⏳ in progress |
 | 7 | Self-check | ⬜ pending |
 
 ## Environment (verified)
@@ -49,3 +49,7 @@ This file lets the build resume after an interruption. Each phase is committed o
   `timeseries` (stacked area by creation year), `methodology` (§3 constraints), `footer`. Build OK
   (JS 400 kB / 121 kB gz, CSS 10 kB). Rendered headless (Playwright) with **zero console/page
   errors**; reviewed desktop + 390 px mobile. Polished the choropleth colour domain (D8).
+- **PHASE 5** — Design pass: confirmed colour-blind-safe Viridis (sequential map) + labelled
+  categorical timeseries, dark theme, and the mobile bar-ranking fallback (reviewed at 390 px).
+  Added `scroll-margin-top` to the hero so the sticky bar never hides the eyebrow on anchor jumps,
+  and `:focus-visible` outlines for keyboard a11y. `prefers-reduced-motion` already respected.
