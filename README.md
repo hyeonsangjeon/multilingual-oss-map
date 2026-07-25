@@ -1,5 +1,9 @@
 # multilingual-oss-map
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Deploy to Pages](https://github.com/hyeonsangjeon/multilingual-oss-map/actions/workflows/deploy.yml/badge.svg)](https://github.com/hyeonsangjeon/multilingual-oss-map/actions/workflows/deploy.yml)
+[![GitHub stars](https://img.shields.io/github/stars/hyeonsangjeon/multilingual-oss-map?style=social)](https://github.com/hyeonsangjeon/multilingual-oss-map/stargazers)
+
 **An interactive language map of multilingual open source.** Built from the public
 [GitHub Multilingual Repositories Dataset](https://github.com/github/multilingual-repositories)
 (CC0-1.0), it shows *what languages open source collaboration actually happens in* across 40M+
@@ -87,6 +91,10 @@ most-commented PR, and may capture badges, templates, install commands, or mixed
 dataset is **a discovery tool, not a ground-truth benchmark**, and must **not** be used to infer
 attributes of the people behind repositories. All counts are "repositories **classified as** language
 X", never "repositories that **use** language X". See [`docs/methodology.md`](docs/methodology.md).
+
+---
+
+⭐ **Star this repo if you find it useful — it helps others discover the dataset.**
 
 ## License
 
