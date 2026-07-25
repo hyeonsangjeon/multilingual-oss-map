@@ -60,8 +60,8 @@ Per `(repository_id, source, lang_code)` we compute `n = COUNT(DISTINCT classifi
 counts for a language at **strictness k** when `n ≥ k`:
 
 - **1** — any one classifier (broad recall)
-- **2** — 2-of-3 agree (**site default**, per spec §3.4)
-- **3** — all three agree (high precision)
+- **2** — 2-of-3 agree (balanced)
+- **3** — all three agree (high precision, **site default** — see decisions.md D9; overrides spec §3.4)
 
 ### Correctness check vs the dataset README's published tables
 

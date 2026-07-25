@@ -87,3 +87,27 @@ All shipped to the live site (Pages Actions deploy succeeded) and screenshot-ver
   chosen. Added a `mapInteracted` flag so the choropleth only dims-to-selection after a direct map
   click (0/177 dimmed on load; click-to-focus still works). `docs/decisions.md` D10.
   (`site/src/store.js`, `site/src/map.js`, `site/src/detail.js`, `site/src/styles.css`)
+
+## Second polish pass (4 items, each committed separately)
+
+Screenshot-verified on desktop (1300px) and mobile (375px); zero console/page errors. All figures
+recaptured at **all‑3** strictness.
+
+- **R1 — Mobile bar taps drive the map** (`aa8492d`). Tapping a language in the mobile ranking now
+  (1) spotlights that language's region on the overview map (white outline via a new `.hl` class,
+  others dimmed) and (2) updates the Language detail panel. The map stays display-only. Verified at
+  375px: tapping Korean outlines N+S Korea (hl=2), dims 175/177. (`site/src/map.js`,
+  `site/src/styles.css`)
+- **R2 — Animated hero + supporting figures** (`5eec0b5`). Replaced the flat full-page screenshot
+  with `docs/hero-loop.gif` (README→Issues→Pull Requests, the map recolouring, 559 KB, all‑3) plus
+  two crops: `docs/korea-tooltip.png` (Korea tooltip: README 5th / Issues 1st / PR 2nd) and
+  `docs/asymmetry.png` (dumbbell). Removed the stale `docs/preview.png`. (`README.md`, `docs/*`)
+- **R3 — GitHub star button in the topbar** (`3136d0b`). Self-contained anchor (GitHub mark +
+  "Star") linking to the repo, no external script; dark-theme toned with gold hover. Collapses to
+  icon-only below 620px so 375px does not overflow. (`site/index.html`, `site/src/styles.css`)
+- **R4 — Stale "strictness 2" copy audit** (this commit). Swept README/docs/site for pre-all‑3
+  wording. Fixed `docs/schema-notes.md` (marked all‑3, not 2‑of‑3, as the site default → D9) and
+  `docs/self-check.md` (the top‑3 table + label were still 2‑of‑3, showing Chinese #1 in issues;
+  recomputed at all‑3 from `lang-totals.json` → Korean #1 in issues, matching the headline). The
+  remaining "2‑of‑3" strings are legitimate (toggle labels, the scale definition, the decision log's
+  D6→D9 history, the input spec, and this changelog).

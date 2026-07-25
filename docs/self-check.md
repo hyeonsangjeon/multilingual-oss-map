@@ -29,12 +29,12 @@ git status --short site/data/           # (empty — no diff)
 | Ranks are contiguous `1..N` in every (source, strictness) list | **pass** |
 | The three sources produce different rankings (not collapsed) | **pass** (see below) |
 
-Top‑3 non‑English languages at the default 2‑of‑3 strictness:
+Top‑3 non‑English languages at the default **all‑3** strictness:
 
 | Source | #1 | #2 | #3 |
 | --- | --- | --- | --- |
-| README | Portuguese | Chinese | Spanish |
-| Issues | Chinese | Spanish | Japanese |
+| README | Portuguese | Spanish | Russian |
+| Issues | Korean | Spanish | Portuguese |
 | Pull requests | Spanish | Korean | Portuguese |
 
 The README vs issue difference is the project's headline: **Korean is #5 in READMEs but #1 in issues
