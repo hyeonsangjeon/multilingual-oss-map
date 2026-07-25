@@ -1,11 +1,13 @@
 # multilingual-oss-map
 
-**An interactive language map of multilingual open source.** This project aggregates the public
+**An interactive language map of multilingual open source.** Built from the public
 [GitHub Multilingual Repositories Dataset](https://github.com/github/multilingual-repositories)
-(CC0-1.0) into a static, explorable dashboard that shows *what languages open source collaboration
-actually happens in* — and reveals a striking asymmetry: many communities **write their README in
-English but discuss in their mother tongue**. The centerpiece is a choropleth **language map** of
-non‑English README, issue, and pull‑request activity across 40M+ repositories.
+(CC0-1.0), it shows *what languages open source collaboration actually happens in* across 40M+
+repositories.
+
+The finding: many communities **write their README in English but discuss in their mother tongue.**
+The centrepiece is a choropleth **language map** of non‑English README, issue, and pull‑request
+activity.
 
 🌍 **[Live demo → hyeonsangjeon.github.io/multilingual-oss-map](https://hyeonsangjeon.github.io/multilingual-oss-map/)**
 
