@@ -8,8 +8,8 @@ This file lets the build resume after an interruption. Each phase is committed o
 | --- | --- | --- |
 | 0 | Repo scaffold | ✅ done |
 | 1 | Dataset schema + access notes | ✅ done |
-| 2 | Aggregation pipeline (`scripts/aggregate.py`) | ⏳ in progress |
-| 3 | Language→region mapping | ⬜ pending |
+| 2 | Aggregation pipeline (`scripts/aggregate.py`) | ✅ done |
+| 3 | Language→region mapping | ⏳ in progress |
 | 4 | Map + charts (Vite/D3) | ⬜ pending |
 | 5 | Design (dark, colorblind-safe, mobile) | ⬜ pending |
 | 6 | Docs + Pages deployment | ⬜ pending |
@@ -36,3 +36,6 @@ This file lets the build resume after an interruption. Each phase is committed o
 - **PHASE 1** — Verified real schema via DuckDB over all shards (matches dataset README totals
   exactly: 80,657,333 rows / 40,817,528 repos). Wrote `docs/schema-notes.md`. Found the published
   aggregate = all-three-agree, and CJK over-firing at low strictness (decisions D6/D7).
+- **PHASE 2** — Wrote `scripts/aggregate.py` (DuckDB). Validates source totals, materializes a
+  47M-row consensus table, emits 4 deterministic JSON files in ~23 s. Verified **byte-identical**
+  reruns and spot-checked values against GitHub's published tables (issue s3 KO=127,993 exact).
