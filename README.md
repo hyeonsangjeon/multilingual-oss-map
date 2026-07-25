@@ -12,7 +12,9 @@ non‑English README, issue, and pull‑request activity across 40M+ repositorie
 > ⚠️ This is a **language map, not a country map.** Colors mark regions where a language is commonly
 > used — not where repositories are located. See [Data limitations](#data-limitations).
 
-[![The language map of multilingual open source](docs/preview.png)](https://hyeonsangjeon.github.io/multilingual-oss-map/)
+[![Animated language map: the choropleth recolouring as the text source switches README → Issues → Pull Requests, at all-3 classifier strictness](docs/hero-loop.gif)](https://hyeonsangjeon.github.io/multilingual-oss-map/)
+
+<sub>↑ The map recolours as the source switches **README → Issues → Pull Requests** (classifier strictness: all‑3). Portuguese leads READMEs; Korean leads issues.</sub>
 
 ## The question
 
@@ -22,6 +24,11 @@ According to the dataset, **Korean is the #1 non‑English language in issue tex
 READMEs**, while **Portuguese is the #1 non‑English README language** (3M+ repositories). That gap
 between *official documentation language* and *working conversation language* is the story this site
 tells.
+
+<p align="center">
+  <img src="docs/korea-tooltip.png" width="620" alt="Map tooltip over South Korea at all-3 strictness: Korean ranks 5th in READMEs, 1st in issues, 2nd in pull requests" />
+  <br /><sub><em>Hovering South Korea (all‑3 strictness): Korean is <strong>5th in READMEs</strong>, but <strong>1st in issues</strong> and 2nd in pull requests.</em></sub>
+</p>
 
 ## What you can explore
 
@@ -33,7 +40,12 @@ tells.
 - **Growth over time** — repositories by creation year, by classified language.
 - **Method & limitations** — the constraints below, surfaced in the UI.
 
-A **classifier‑strictness** dial (≥1 / 2‑of‑3 / all‑3) runs through every view as an honesty control.
+A **classifier‑strictness** dial (≥1 / 2‑of‑3 / all‑3, defaulting to **all‑3**) runs through every view as an honesty control.
+
+<p align="center">
+  <img src="docs/asymmetry.png" width="820" alt="Dumbbell asymmetry chart at all-3 strictness: each language's README rank linked to its issue rank; Korean makes the largest jump from 5th to 1st" />
+  <br /><sub><em>The asymmetry (dumbbell) chart at all‑3 — Korean makes the biggest jump: README <strong>5th</strong> → issue <strong>1st</strong>.</em></sub>
+</p>
 
 ## What's here
 
