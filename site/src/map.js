@@ -1,19 +1,19 @@
 import {
   select, geoNaturalEarth1, geoPath, geoGraticule10,
-  scaleSequentialLog, interpolateViridis, scaleLinear,
+  scaleQuantile, scaleLinear,
 } from "d3";
 import { getState, setState, subscribe } from "./store.js";
 import {
-  countries, countryValues, countriesForLang, totalsFor, lookupTotal, langName, langRegions,
+  countries, countryValues, countriesForLang, totalsFor, lookupTotal, langRegions,
 } from "./data.js";
+import { hueForLang, shadeHex, NODATA, legendChips, OTHER_HUE, BINS } from "./palette.js";
 import { commas, human, ordinal, SOURCE_LABEL } from "./format.js";
 import { showTip, moveTip, hideTip } from "./tooltip.js";
 
 const W = 960, H = 500;
 const MOBILE_BP = 640;
 
-let holder, legend, caption, pathGen, colorScale;
-let scLo = 1, scHi = 2;
+let holder, legend, caption, pathGen, binScale;
 let mapBuilt = false, barsBox = null, narrow = false;
 
 export function mountMap() {
@@ -38,19 +38,17 @@ function wantBars() {
   return (holder.clientWidth || window.innerWidth) < MOBILE_BP;
 }
 
-function computeScale(values) {
+function computeBins(values) {
+  // The repo-count distribution is extreme, so cut it into quantile bins (equal
+  // sample count), not equal width — otherwise almost everything lands in one bin.
   const counts = [...values.values()].map((v) => v.count).filter((c) => c > 0);
-  scHi = Math.max(2, ...counts);
-  const rawLo = counts.length ? Math.min(...counts) : 1;
-  // Keep the ramp readable: cap the span so a single tiny outlier can't wash the map out.
-  scLo = Math.max(1, rawLo, Math.floor(scHi / 6000));
-  if (scLo >= scHi) scLo = Math.max(1, Math.floor(scHi / 2));
-  colorScale = scaleSequentialLog(interpolateViridis).domain([scLo, scHi]).clamp(true);
+  const range = Array.from({ length: BINS }, (_, i) => i);
+  binScale = scaleQuantile().domain(counts.length ? counts : [0, 1]).range(range);
 }
 
 function render(s) {
   const values = countryValues(s.source, s.strictness);
-  computeScale(values);
+  computeBins(values);
   narrow = wantBars();
   if (!mapBuilt) buildMap();
   holder.classList.toggle("static", narrow); // non-interactive overview on small screens
@@ -97,7 +95,7 @@ function onHover(event, d) {
   }).join("");
   showTip(
     `<div class="tt-title">${v.name} <span class="num" style="color:var(--text-faint)">in ${cname}</span></div>` +
-    `<div class="tt-row" style="color:var(--accent2)">Region shaded by its top language</div>` + ranks,
+    `<div class="tt-row" style="color:var(--accent2)">Colour = language · shade = repo volume</div>` + ranks,
     event
   );
   moveTip(event);
@@ -119,7 +117,7 @@ function updateMap(s, values) {
   select(holder).selectAll("path.country")
     .attr("fill", (d) => {
       const v = values.get(d.id);
-      return v ? colorScale(v.count) : "#172032";
+      return v ? shadeHex(hueForLang(v.lang), binScale(v.count)) : NODATA;
     })
     .classed("nodata", (d) => !values.get(d.id))
     .classed("dim", (d) => (selSet ? !selSet.has(d.id) : false))
@@ -158,7 +156,7 @@ function updateBars(s) {
     .each(function (d) {
       const row = select(this);
       row.select(".bl").text(d.name);
-      row.select(".bt").style("width", x(d.count) + "%").style("background", colorScale(d.count));
+      row.select(".bt").style("width", x(d.count) + "%").style("background", shadeHex(hueForLang(d.lang), binScale(d.count)));
       row.select(".bv").text(human(d.count));
     });
 }
@@ -169,14 +167,20 @@ function topMappable(source, strictness, n) {
 
 /* ---------------- legend & caption ---------------- */
 function renderLegend(s) {
-  const stops = [];
-  for (let i = 0; i <= 10; i++) stops.push(interpolateViridis(i / 10));
-  const mid = Math.round(Math.sqrt(scLo * scHi));
+  const chips = legendChips().map((c) =>
+    `<button type="button" class="lchip${c.lang && c.lang === s.selectedLang ? " on" : ""}"` +
+    `${c.lang ? ` data-lang="${c.lang}"` : ' disabled aria-disabled="true"'}>` +
+    `<i style="background:${c.hue}"></i>${c.name}</button>`
+  ).join("");
+  const steps = [0, 1, 2, 3].map((b) => `<i style="background:${shadeHex(OTHER_HUE, b)}"></i>`).join("");
   legend.innerHTML =
-    `<div><div class="legend-bar" style="background:linear-gradient(90deg,${stops.join(",")})"></div>` +
-    `<div class="legend-ticks"><span>${human(scLo)}</span><span>${human(mid)}</span><span>${human(scHi)}</span></div></div>` +
-    `<div class="legend-note">Repositories classified in the ${SOURCE_LABEL[s.source]} (log scale). ` +
-    `Colour marks where a language is spoken — <strong>not</strong> where repositories are located.</div>`;
+    `<div class="legend-cats">${chips}</div>` +
+    `<div class="legend-scale" aria-hidden="true"><span>fewer</span>${steps}<span>more repos</span></div>` +
+    `<p class="legend-note"><strong>Colour = language</strong>, lightness = repositories (quartiles). ` +
+    `Marks where a language is spoken — <strong>not</strong> where repositories are located.</p>`;
+  legend.querySelectorAll(".lchip[data-lang]").forEach((el) => {
+    el.addEventListener("click", () => setState({ selectedLang: el.dataset.lang, mapInteracted: true }));
+  });
 }
 
 function renderCaption(s, values) {
