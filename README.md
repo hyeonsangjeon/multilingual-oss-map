@@ -13,6 +13,8 @@ activity.
 
 > ⚠️ This is a **language map, not a country map.** Colors mark regions where a language is commonly
 > used — not where repositories are located. See [Data limitations](#data-limitations).
+>
+> *An independent, unofficial visualisation. Not affiliated with or endorsed by GitHub.*
 
 [![Animated language map: the choropleth recolouring as the text source switches README → Issues → Pull Requests, at all-3 classifier strictness](docs/hero-loop.gif)](https://hyeonsangjeon.github.io/multilingual-oss-map/)
 
