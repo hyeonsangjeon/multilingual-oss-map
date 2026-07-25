@@ -12,7 +12,7 @@ Consensus / strictness
 For each (repository_id, source, lang_code) we count DISTINCT classifiers
 (fastText / gcld3 / lingua-py) that predicted the language. A repo counts for a
 language at strictness k when that count >= k (1 = broad recall, 2 = 2-of-3
-default, 3 = all-three high precision). See docs/schema-notes.md.
+balanced, 3 = all-three high precision, default). See docs/schema-notes.md.
 
 Determinism: outputs contain no wall-clock time (timing is logged to stdout),
 arrays are fully sorted, medians are integers — so re-runs are byte-identical.
@@ -256,11 +256,11 @@ def main() -> int:
         "sources": SOURCES,
         "classifiers": CLASSIFIERS,
         "strictness": {
-            "default": 2,
+            "default": 3,
             "labels": {
                 "1": "\u22651 classifier (broad recall)",
-                "2": "2-of-3 agree (balanced, default)",
-                "3": "all 3 agree (high precision)",
+                "2": "2-of-3 agree (balanced)",
+                "3": "all 3 agree (high precision, default)",
             },
         },
         "english_excluded": True,

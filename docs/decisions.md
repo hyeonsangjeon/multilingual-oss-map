@@ -58,3 +58,17 @@ scale anchored at 1 pushed every shaded country into the bright half of Viridis,
 This is a purely visual encoding change — the underlying counts, tooltips and captions are
 unchanged — and it makes the README↔issue source switch legible (spec §5 aesthetics, below the
 honesty/hard-constraint tiers of §8). Colour ramp remains colour-blind-safe Viridis (spec §9).
+
+## D9 — Default strictness changed to all-3 (supersedes D6's default)
+Per an explicit user directive, the **default strictness is now 3 (all three classifiers agree)**,
+overriding the original spec §3.4 default of 2-of-3 (recorded in D6). Rationale:
+- **Honesty / correctness (§8 #2):** all-3 reproduces GitHub's *published* aggregate tables (D7), so
+  the numbers a visitor sees first match the dataset's own headline figures.
+- **Not distorted by CJK over-firing:** gcld3 and lingua-py over-fire on CJK at looser settings
+  (D6). At 2-of-3 the hero "#1 non-English issues" card reads **Chinese** (an artefact); at all-3 it
+  reads **Korean (127,993)** — the true top non-English issue language.
+- **Sharpest, truest narrative (§8 #4):** the headline asymmetry (Korean **#5 in READMEs → #1 in
+  issues**) is cleanest and *accurate* at all-3, rather than the softened "#4 in issues" at 2-of-3.
+The toggle still exposes ≥1 / 2-of-3 / all-3 (the honesty dial D6 asks for) and the labels now mark
+all-3 as the default; 2-of-3 is relabelled "balanced" (no longer "default"). The 2-of-3 correctness
+cross-check against the dataset README's "≥ two classifiers" aggregate is unchanged.

@@ -1,6 +1,6 @@
 // Tiny global state store with pub/sub. State: { strictness, source, selectedLang }.
 const state = {
-  strictness: 2, // spec §3.4 default = 2-of-3
+  strictness: 3, // default = all-3 agree (matches GitHub's published tables; see docs/decisions.md D9)
   source: "readme",
   selectedLang: null,
 };

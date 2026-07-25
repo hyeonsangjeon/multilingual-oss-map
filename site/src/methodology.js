@@ -22,7 +22,7 @@ export function mountMethodology() {
     },
     {
       h: "Three classifiers, one honesty dial",
-      p: `Each text is labelled by fastText, gcld3 and lingua-py. Strictness = how many must agree: ≥1 is broad recall, 2-of-3 is the balanced default, all-3 is high precision and matches the dataset's own published tables. CJK languages are the most sensitive to this dial.`,
+      p: `Each text is labelled by fastText, gcld3 and lingua-py. Strictness = how many must agree: ≥1 is broad recall, 2-of-3 is balanced, all-3 is the high-precision default and matches the dataset's own published tables. CJK languages are the most sensitive to this dial.`,
     },
     {
       h: "What the numbers count",

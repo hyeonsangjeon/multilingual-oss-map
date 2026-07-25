@@ -43,8 +43,8 @@ Strictness is surfaced as a first‑class control instead of being hidden:
 | Setting | Meaning | Character |
 | --- | --- | --- |
 | ≥1 | any one classifier | broad recall, noisiest |
-| 2‑of‑3 | two agree (**default**) | balanced |
-| all 3 | unanimous | high precision |
+| 2‑of‑3 | two agree | balanced |
+| all 3 | unanimous (**default**) | high precision, matches GitHub's published tables |
 
 **Why it matters:** gcld3 and lingua‑py over‑fire on CJK scripts (each labels several million READMEs
 as Chinese, versus fastText's ~221k), so **Chinese, Japanese and Korean move the most** as you turn
