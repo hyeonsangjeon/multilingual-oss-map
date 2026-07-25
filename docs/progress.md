@@ -12,8 +12,8 @@ This file lets the build resume after an interruption. Each phase is committed o
 | 3 | Language→region mapping | ✅ done |
 | 4 | Map + charts (Vite/D3) | ✅ done |
 | 5 | Design (dark, colorblind-safe, mobile) | ✅ done |
-| 6 | Docs + Pages deployment | ⏳ in progress |
-| 7 | Self-check | ⬜ pending |
+| 6 | Docs + Pages deployment | ✅ done |
+| 7 | Self-check | ⏳ in progress |
 
 ## Environment (verified)
 
@@ -53,3 +53,8 @@ This file lets the build resume after an interruption. Each phase is committed o
   categorical timeseries, dark theme, and the mobile bar-ranking fallback (reviewed at 390 px).
   Added `scroll-margin-top` to the hero so the sticky bar never hides the eyebrow on anchor jumps,
   and `:focus-visible` outlines for keyboard a11y. `prefers-reduced-motion` already respected.
+- **PHASE 6** — Wrote `docs/methodology.md` (full method + hard constraints), finalised the README
+  (keyword‑rich first paragraph, live‑demo link, `docs/preview.png` hero shot, "what you can
+  explore"). Added `.github/workflows/deploy.yml` (Actions: `npm ci` + `vite build` of `site/`,
+  base `./`, upload `site/dist`, deploy‑pages). Enabled Pages (build type = GitHub Actions) and set
+  the repo homepage to the Pages URL. About + all seven topics confirmed present.

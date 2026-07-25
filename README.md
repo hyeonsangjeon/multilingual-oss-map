@@ -7,8 +7,12 @@ actually happens in* — and reveals a striking asymmetry: many communities **wr
 English but discuss in their mother tongue**. The centerpiece is a choropleth **language map** of
 non‑English README, issue, and pull‑request activity across 40M+ repositories.
 
+🌍 **[Live demo → hyeonsangjeon.github.io/multilingual-oss-map](https://hyeonsangjeon.github.io/multilingual-oss-map/)**
+
 > ⚠️ This is a **language map, not a country map.** Colors mark regions where a language is commonly
 > used — not where repositories are located. See [Data limitations](#data-limitations).
+
+[![The language map of multilingual open source](docs/preview.png)](https://hyeonsangjeon.github.io/multilingual-oss-map/)
 
 ## The question
 
@@ -18,6 +22,18 @@ According to the dataset, **Korean is the #1 non‑English language in issue tex
 READMEs**, while **Portuguese is the #1 non‑English README language** (3M+ repositories). That gap
 between *official documentation language* and *working conversation language* is the story this site
 tells.
+
+## What you can explore
+
+- **Language map** — a Natural‑Earth choropleth shaded by the top non‑English language per region,
+  with a README / issue / pull‑request source switch (watch the map redraw).
+- **Asymmetry chart** — a sortable dumbbell linking each language's README rank to its issue rank.
+- **Language detail** — per‑source counts and ranks, the classifier‑agreement split, primary
+  repository languages, and star / fork quantiles for any language.
+- **Growth over time** — repositories by creation year, by classified language.
+- **Method & limitations** — the constraints below, surfaced in the UI.
+
+A **classifier‑strictness** dial (≥1 / 2‑of‑3 / all‑3) runs through every view as an honesty control.
 
 ## What's here
 
