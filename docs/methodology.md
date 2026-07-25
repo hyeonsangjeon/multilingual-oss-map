@@ -70,8 +70,21 @@ published aggregate; this is documented as a known discrepancy, not silently rec
 
 ## 5. Reading the specific views
 
-- **Choropleth colour** is a colour‑blind‑safe Viridis **log** scale spanning the currently shaded
-  min–max counts (decision D8). It encodes count magnitude only; hue carries no categorical meaning.
+- **Choropleth colour** encodes two variables kept deliberately separate (decision D11):
+  - **Hue = language identity.** The top‑8 mappable languages — fixed once from the all‑3 README
+    ranking and reused across *every* source tab and strictness level so a language never changes
+    colour — each get a distinct hue from an Okabe–Ito‑derived, colour‑blind‑safe palette; every
+    other language collapses into one neutral **"Other"** grey. Hue answers *which* language, not
+    *how many* repositories, and it is the same on the README, Issues and Pull‑Requests tabs so the
+    shift you see when switching tabs is a real change in the data, not a re‑palette.
+  - **Lightness = repository volume**, cut into **discrete quantile bins** (the count distribution is
+    far too skewed for equal‑width bins — almost everything would land in one bin). Darker = fewer,
+    lighter = more, within each hue.
+  - The legend lists the eight language chips plus "Other" and a separate lightness ramp; a
+    colour‑blind (deuteranopia/protanopia) simulation confirms the headline comparisons — Portuguese
+    vs Spanish in South America, Chinese vs Korean in East Asia — stay distinct. Eight‑way
+    categorical colour is at the limit of red‑green‑safe distinguishability, so a few non‑adjacent
+    warm hues converge under simulation; they are disambiguated by geography and the legend.
 - **Asymmetry (slope) chart** links a language's README rank to its issue rank. The gap — not the
   absolute position — is the point. It is sharpest at higher strictness.
 - **Star / fork figures are medians and high percentiles**, because the distribution is extremely

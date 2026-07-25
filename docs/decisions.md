@@ -82,3 +82,36 @@ except the selected language's regions — we gate that dimming behind a new `ma
 is set **only** by a direct map click. So the map loads whole (important now that it is also the
 mobile centrepiece, D-mobile), and click-to-focus still works on desktop. Aesthetics/narrative,
 below the honesty tier of §8.
+
+## D11 — Map colour: categorical hue (language) + discrete lightness (volume); supersedes D8
+The choropleth drove every country's fill from a single continuous Viridis‑by‑repo‑count scale
+(D8), so colour encoded *count*, not *language*. Two different‑language regions with similar counts
+came out the same colour, and because the count distribution is extremely skewed the whole map
+collapsed into one green→yellow wash — neighbouring language regions were indistinguishable, which
+directly contradicts the site's premise ("a **language** map"). **Decision:** split the two
+variables (spec A, honesty/correctness tier of §8 — the encoding was actively misleading):
+- **Hue = language identity.** The top‑8 mappable languages get distinct categorical hues; the rest
+  are one neutral "Other" grey (>8 categorical colours are not reliably separable). The top‑8 are
+  fixed **once** from the all‑3 README ranking (PT, ES, RU, FR, KO, TR, ID, ZH) and reused across
+  every source tab and strictness — the single most important rule: if a language were re‑coloured
+  per tab, comparing tabs would be impossible.
+- **Lightness = volume, in discrete quantile bins** (not a continuous ramp, and not equal‑width —
+  the skew would put almost everything in one bin). Boundaries are what make magnitude differences
+  perceptible.
+- **Palette = Okabe–Ito**, the standard colour‑blind‑safe categorical set. Six hues are used as‑is.
+  Okabe–Ito's reddish‑purple `#CC79A7` was **dropped**: under a deuteranopia simulation it collapses
+  onto the neutral "Other" grey (ΔE ≈ 5), and the language it would have marked (Indonesian) sits
+  surrounded by "Other"‑grey neighbours — the worst possible case. The two lowest‑ranked,
+  geographically isolated languages (Indonesian, Chinese) instead use a magenta `#E7298A` + red
+  `#CC3311`, both verified against their actual map neighbours.
+- **Known limitation (documented honestly, not hidden):** eight‑way categorical colour is at the
+  theoretical limit of red‑green‑safe distinguishability, made harder here because lightness is
+  spent on volume rather than identity. Under deuteranopia/protanopia the five headline languages
+  (PT, ES, RU, FR, KO) and every *adjacent* coloured border stay distinct, but a few **non‑adjacent**
+  warm hues (e.g. Portuguese/French/Chinese) converge toward gold. They are separated by oceans and
+  continents and named in the legend, so identity is still recoverable; the headline stories
+  (Korean; Portuguese vs Spanish South America) are unaffected. See docs/methodology.md §5.
+
+This is a purely visual‑encoding change — counts, tooltips and captions are unchanged. It replaces
+D8's continuous‑ramp fix (that only rescaled the wash; it did not address the root cause that colour
+was encoding the wrong variable).
