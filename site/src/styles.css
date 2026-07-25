@@ -186,13 +186,18 @@ section { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
 .map-holder .country.dim { opacity: 0.25; }
 .map-holder .graticule { fill: none; stroke: var(--line-soft); stroke-width: 0.5; }
 .map-holder .sphere { fill: #0d1524; stroke: var(--line); stroke-width: 0.6; }
+/* narrow screens: the map is a non-interactive overview above the tappable ranking */
+.map-holder.static svg { pointer-events: none; }
+.map-holder.static .country { cursor: default; }
 
 .map-legend { display: flex; align-items: center; gap: 12px; padding: 10px 8px 4px; flex-wrap: wrap; }
 .legend-bar { height: 12px; width: 240px; border-radius: 6px; }
 .legend-note { color: var(--text-faint); font-size: 0.8rem; }
 .legend-ticks { display: flex; justify-content: space-between; width: 240px; font-size: 0.72rem; color: var(--text-faint); font-family: var(--mono); }
 
-/* mobile bar-ranking fallback */
+/* map + ranking on narrow screens (both shown, not either/or) */
+.map-bars { margin-top: 14px; border-top: 1px solid var(--line-soft); padding-top: 14px; }
+.bars-hint { font-size: 0.8rem; color: var(--text-faint); margin: 0 4px 10px; line-height: 1.4; }
 .bars { display: flex; flex-direction: column; gap: 7px; padding: 6px 4px; }
 .bar-row { display: grid; grid-template-columns: 92px 1fr auto; align-items: center; gap: 10px; cursor: pointer; }
 .bar-row .bl { color: var(--text-dim); font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

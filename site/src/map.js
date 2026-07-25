@@ -13,8 +13,8 @@ const W = 960, H = 500;
 const MOBILE_BP = 640;
 
 let holder, legend, caption, pathGen, colorScale;
-let mode = null; // 'map' | 'bars'
 let scLo = 1, scHi = 2;
+let mapBuilt = false, barsBox = null, narrow = false;
 
 export function mountMap() {
   holder = document.getElementById("map-holder");
@@ -30,7 +30,7 @@ export function mountMap() {
   let rt;
   window.addEventListener("resize", () => {
     clearTimeout(rt);
-    rt = setTimeout(() => render(getState(), true), 180);
+    rt = setTimeout(() => render(getState()), 180);
   });
 }
 
@@ -48,18 +48,16 @@ function computeScale(values) {
   colorScale = scaleSequentialLog(interpolateViridis).domain([scLo, scHi]).clamp(true);
 }
 
-function render(s, force = false) {
+function render(s) {
   const values = countryValues(s.source, s.strictness);
   computeScale(values);
-  const nextMode = wantBars() ? "bars" : "map";
-  if (nextMode !== mode || force) {
-    mode = nextMode;
-    holder.innerHTML = "";
-    if (mode === "map") buildMap();
-    else buildBars(s);
-  }
-  if (mode === "map") updateMap(s, values);
-  else updateBars(s);
+  narrow = wantBars();
+  if (!mapBuilt) buildMap();
+  holder.classList.toggle("static", narrow); // non-interactive overview on small screens
+  if (narrow) hideTip();
+  updateMap(s, values);
+  if (narrow) { ensureBars(); updateBars(s); }
+  else if (barsBox) { barsBox.remove(); barsBox = null; }
   renderLegend(s);
   renderCaption(s, values);
 }
@@ -81,6 +79,7 @@ function buildMap() {
     .on("mousemove", onHover)
     .on("mouseleave", hideTip)
     .on("click", onClick);
+  mapBuilt = true;
 }
 
 function onHover(event, d) {
@@ -125,15 +124,19 @@ function updateMap(s, values) {
     .classed("dim", (d) => (selSet ? !selSet.has(d.id) : false));
 }
 
-/* ---------------- BARS (mobile) ---------------- */
-function buildBars() {
-  select(holder).append("div").attr("class", "bars");
+/* ---------------- BARS (shown below the map on narrow screens) ---------------- */
+function ensureBars() {
+  if (barsBox) return;
+  barsBox = select(holder).append("div").attr("class", "map-bars");
+  barsBox.append("div").attr("class", "bars-hint")
+    .text("Regions above are coloured by their top language. Tap a bar for details \u2193");
+  barsBox.append("div").attr("class", "bars");
 }
 function updateBars(s) {
   const list = topMappable(s.source, s.strictness, 15);
   const max = Math.max(1, ...list.map((d) => d.count));
   const x = scaleLinear().domain([0, max]).range([0, 100]);
-  const box = select(holder).select(".bars");
+  const box = barsBox.select(".bars");
   box.selectAll(".bar-row")
     .data(list, (d) => d.lang)
     .join((enter) => {
