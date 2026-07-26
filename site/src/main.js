@@ -7,6 +7,7 @@ import { mountSpotlight } from "./spotlight.js";
 import { mountSlope } from "./slope.js";
 import { mountDetail } from "./detail.js";
 import { mountTimeseries } from "./timeseries.js";
+import { mountStack } from "./stack.js";
 import { mountMethodology } from "./methodology.js";
 
 mountStrictness(document.getElementById("topbar-controls"), { compact: true });
@@ -17,6 +18,7 @@ mountSpotlight();
 mountSlope();
 mountDetail();
 mountTimeseries();
+mountStack();
 mountMethodology();
 mountFooter();
 

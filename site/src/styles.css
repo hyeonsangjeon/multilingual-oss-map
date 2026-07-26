@@ -353,6 +353,19 @@ section { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
 .spinner { width: 26px; height: 26px; border: 3px solid var(--line); border-top-color: var(--accent2); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
+/* ---------- language × stack heatmap ---------- */
+.heat-wrap { --heat-rowh: 92px; overflow-x: auto; padding-bottom: 4px; }
+.heat-grid { display: grid; gap: 3px; min-width: 560px; }
+.heat-colh { display: flex; align-items: flex-end; justify-content: center; min-height: 84px; padding-bottom: 4px; }
+.heat-colh span { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 0.74rem; color: var(--text-dim); white-space: nowrap; line-height: 1; }
+.heat-rowh { display: flex; align-items: center; justify-content: flex-end; padding-right: 9px; font-size: 0.82rem; color: var(--text-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.heat-cell { aspect-ratio: 1 / 1; min-height: 30px; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 0.72rem; font-variant-numeric: tabular-nums; cursor: default; outline: 2px solid transparent; outline-offset: -2px; transition: outline-color 0.1s; }
+.heat-cell:hover { outline-color: var(--text); }
+.stack-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin-top: 14px; }
+.stack-legend-lab { font-size: 0.78rem; color: var(--text-dim); }
+.stack-key { display: inline-flex; align-items: center; gap: 5px; font-size: 0.72rem; color: var(--text-faint); font-family: var(--mono); }
+.stack-key i { width: 20px; height: 12px; border-radius: 2px; }
+
 /* ---------- responsive ---------- */
 @media (max-width: 860px) {
   .detail-grid { grid-template-columns: 1fr; }
@@ -367,6 +380,8 @@ section { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
   .topbar-left { gap: 8px; }
   .gh-star { padding: 5px 7px; }
   .gh-star .gh-star-label { display: none; }
+  .heat-wrap { --heat-rowh: 78px; }
+  .heat-rowh { font-size: 0.76rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

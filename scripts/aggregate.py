@@ -235,6 +235,45 @@ def main() -> int:
             timeseries[src][str(k)] = {"langs": top + ["OTHER"], "data": data}
     write_json("timeseries.json", timeseries)
 
+    # ---- lang-stack: natural language (README) x primary programming language ----
+    # A repo's natural language is taken from its README classification (the map's
+    # default lens); its tech stack is metadata.primary_language_name. Axes are the
+    # top-12 natural languages and top-12 programming languages at strictness 3, so
+    # the grid stays stable while the strictness toggle only re-weights the cells.
+    # Cell value in the UI is a within-language share: count / (that language's repos
+    # with a known primary language). This is README-based and independent of the
+    # source toggle — the stack is a repo attribute, not a property of who is talking.
+    log("aggregating lang-stack (natural language x programming language) ...")
+    NAT_TOP, PL_TOP = 12, 12
+    nat_axis = [r[0] for r in con.sql(
+        "SELECT lang, count(*) c FROM agree WHERE source='readme' AND n>=3 "
+        f"GROUP BY 1 ORDER BY c DESC, lang LIMIT {NAT_TOP}").fetchall()]
+    pl_axis = [r[0] for r in con.sql(
+        "SELECT m.pl, count(*) c FROM agree a JOIN meta m ON a.rid=m.rid "
+        "WHERE a.source='readme' AND a.n>=3 AND m.pl IS NOT NULL "
+        f"GROUP BY 1 ORDER BY c DESC, m.pl LIMIT {PL_TOP}").fetchall()]
+    sql_list = lambda xs: "(" + ",".join("'" + x.replace("'", "''") + "'" for x in xs) + ")"
+    natset, plset = sql_list(nat_axis), sql_list(pl_axis)
+    stack_out = {
+        "natural_langs": [{"lang": L, "name": lang_name(L)} for L in nat_axis],
+        "prog_langs": pl_axis,
+        "by_strictness": {},
+    }
+    for k in (1, 2, 3):
+        tot = dict(con.sql(
+            "SELECT a.lang, count(*) FROM agree a JOIN meta m ON a.rid=m.rid "
+            f"WHERE a.source='readme' AND a.n>={k} AND m.pl IS NOT NULL "
+            f"AND a.lang IN {natset} GROUP BY 1").fetchall())
+        cells = con.sql(
+            "SELECT a.lang, m.pl, count(*) FROM agree a JOIN meta m ON a.rid=m.rid "
+            f"WHERE a.source='readme' AND a.n>={k} AND m.pl IN {plset} "
+            f"AND a.lang IN {natset} GROUP BY 1, 2").fetchall()
+        per = {L: {"total": int(tot.get(L, 0)), "cells": {}} for L in nat_axis}
+        for L, P, c in cells:
+            per[L]["cells"][P] = int(c)
+        stack_out["by_strictness"][str(k)] = per
+    write_json("lang-stack.json", stack_out)
+
     # ---- meta.json ----
     log("writing meta.json ...")
     names = {L: lang_name(L) for L in sorted(all_langs)}
