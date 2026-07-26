@@ -136,3 +136,20 @@ green→yellow wash. Reworked per the `수정지시_지도색상_README-1.md` sp
 - **Figures re-shot at the new palette** (`b2d75e8`, spec C-3/B-5). `docs/hero-loop.gif` (185 KB,
   < 3 MB so it stays a GIF), `docs/korea-tooltip.png`, `docs/asymmetry.png`. Also refreshed
   `docs/self-check.md`'s now-stale "Viridis" / mobile-fallback lines.
+
+## Spotlight card + hero showing select→highlight (follow-up)
+
+User feedback (mobile screenshot, French selected): the hero should show "select a language → only
+its regions highlight", ideally with a description card.
+
+- **New site feature** — `site/src/spotlight.js` renders `#map-spotlight`, a card under the map
+  shown when `mapInteracted && selectedLang`. Language name + region badge + README/issue/PR
+  ranks/counts + cross-source takeaway; hue-coloured left border; `×` clears map focus (keeps
+  selection). Wired in `main.js`; container in `index.html`; styles in `styles.css` (`.map-spotlight`,
+  `.sl-*`), responsive 3-col rank grid verified at 375 px.
+- **Hero rebuilt** — `docs/hero-loop.gif` now cycles ES → KO → FR → PT language selections, each
+  spotlighting only that language's regions with the card beneath (topbar hidden, all-3 strictness,
+  1000 px, 404 KB, seamless via a PT pre-select). README hero alt/caption + the "Language map"
+  bullet updated to describe select→spotlight+card. Decision logged as D12.
+- **Verified** — build clean (`index-L7dmyTi9.js`); desktop + 375 px screenshots show the card;
+  0 console errors. Shots saved under session files `hero-card/`.

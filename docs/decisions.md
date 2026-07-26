@@ -115,3 +115,30 @@ variables (spec A, honesty/correctness tier of §8 — the encoding was actively
 This is a purely visual‑encoding change — counts, tooltips and captions are unchanged. It replaces
 D8's continuous‑ramp fix (that only rescaled the wash; it did not address the root cause that colour
 was encoding the wrong variable).
+
+## D12 — A per-selection description card in the map area; hero shows select→spotlight
+
+Selecting a language already dimmed the map to that language's regions (D10/D11), but the *reading*
+of that selection — where the language ranks across README, issues and pull requests — only lived in
+the full **Language detail** section far down the page. On mobile especially, tapping a ranking bar
+lit up the map with no nearby explanation.
+
+**Decision:** add a compact **spotlight card** (`site/src/spotlight.js`, `#map-spotlight`) directly
+under the map. When a language is selected *and the map is focused on it* (`mapInteracted &&
+selectedLang`), the card shows the language name, a region descriptor, its README / issue /
+pull‑request ranks + counts (the current source is outlined), and a one‑line cross‑source takeaway.
+Its left border and swatch use the language's fixed hue (D11), tying the card to the map colour. A
+`×` clears the map focus (`mapInteracted:false`) while keeping `selectedLang`, so the detail panel
+below stays populated (D10).
+
+- **Gated on `mapInteracted`, not just `selectedLang`:** the card appears exactly when the map is
+  spotlighted, so card presence ⇔ map highlight. On load the map stays whole (D10) and the card is
+  hidden — no "the map says nothing but a card is shouting" mismatch.
+- **Hero rebuilt to demonstrate this:** `docs/hero-loop.gif` no longer loops the subtle
+  source‑switch recolour (only ~1.6 % of pixels changed — honest but underwhelming). It now cycles
+  four language selections (Spanish → Korean → French → Portuguese); each spotlights only that
+  language's regions across the map with the description card beneath. Captured at all‑3 strictness,
+  topbar chrome hidden, 1000 px wide, 404 KB (< 3 MB, kept as GIF). Seamless loop: a Portuguese
+  pre‑select before capture makes the first and last settled states identical.
+
+Purely additive — counts, tooltips, the map encoding and the detail panel are unchanged.

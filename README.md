@@ -20,9 +20,9 @@ activity.
 >
 > *An independent, unofficial visualisation. Not affiliated with or endorsed by GitHub.*
 
-[![Animated language map: the choropleth recolouring as the text source switches README → Issues → Pull Requests, at all-3 classifier strictness](docs/hero-loop.gif)](https://hyeonsangjeon.github.io/multilingual-oss-map/)
+[![Animated language map: selecting a language — Spanish, then Korean, French, and Portuguese — spotlights every region where it leads non-English open source, alongside a card showing its README, issue, and pull-request ranks, at all-3 classifier strictness](docs/hero-loop.gif)](https://hyeonsangjeon.github.io/multilingual-oss-map/)
 
-<sub>↑ The map recolours as the source switches **README → Issues → Pull Requests** (classifier strictness: all‑3). Portuguese leads READMEs; Korean leads issues.</sub>
+<sub>↑ Pick a language and only its regions light up across the map — with a card reading out where it ranks in **READMEs vs issues vs pull requests** (classifier strictness: all‑3). Korean is 5th in READMEs but **1st in issues**.</sub>
 
 ## The question
 
@@ -41,7 +41,9 @@ tells.
 ## What you can explore
 
 - **Language map** — a Natural‑Earth choropleth shaded by the top non‑English language per region,
-  with a README / issue / pull‑request source switch (watch the map redraw).
+  with a README / issue / pull‑request source switch (watch the map redraw). Click a language — on
+  the map, the legend, or the ranking — to spotlight only its regions and read its cross‑source
+  ranks in a description card.
 - **Asymmetry chart** — a sortable dumbbell linking each language's README rank to its issue rank.
 - **Language detail** — per‑source counts and ranks, the classifier‑agreement split, primary
   repository languages, and star / fork quantiles for any language.
