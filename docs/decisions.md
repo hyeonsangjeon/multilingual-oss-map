@@ -239,3 +239,42 @@ one-off query output.
 - **Methodology + limitations updated too:** `docs/methodology.md` §5 gives the calculation
   definitions; a "The asymmetry is compositional" card was added to the on-site Method & limitations
   grid (pulling the paired % from the same data, not hard-coded).
+
+## D16 — Add a "Share of year" (100 %-normalised) view to the timeseries, with a mode-specific caption
+
+The creation-year timeseries shipped only as an absolute stacked area. That view answers "how many?"
+and reads as "everything grows together" — the proportional contest between languages (who is *gaining
+ground* on whom) is invisible when every band inflates with the overall volume. Normalising each year
+to 100 % surfaces that second story from the same data.
+
+**Decision:** add a local **[Repositories] / [Share of year]** toggle to the timeseries section
+(default = Repositories), not a new section. Share mode re-stacks with D3 `stackOffsetExpand`; the
+absolute view keeps `stackOffsetNone`.
+
+- **Front-end normalisation, no re-aggregation.** Share is a pure re-projection of the existing
+  `timeseries.json` (each column divided by its own total), so the aggregation pipeline is untouched
+  and idempotency is unaffected. Verified numerically: every source × strictness × year normalises to
+  1.0 within 2.2 × 10⁻¹⁶ (171 year-blocks, 0 empty).
+- **Colours are pinned across views.** The palette is a function of `(source, strictness)` only —
+  `viewMode` never changes the language set — so a language keeps its exact hue when you flip between
+  counts and share. If the same band jumped colour on toggle, cross-view comparison would be
+  impossible. Asserted in the verifier (11 bands, fills identical count ↔ share).
+- **The caption is the point, and it changes with the mode.** Share is far easier to misread than
+  counts, so the two views must *not* share a caption. The share caption carries two warnings the
+  count caption does not:
+  1. **A falling share is not a decline** — a language can grow in absolute numbers yet lose share
+     when others grow faster; the copy tells the reader to switch back to *Repositories* to check.
+  2. **Recent-year undercounting distorts proportions more than counts** — issue/PR coverage thins
+     over time and at *different rates per language* (the same density confound found in D13, where
+     README→issue coverage falls 7.5 % → 1.4 %), so late-year proportion shifts can be pure
+     classification-density artefacts. This is the STEP 1 confound resurfacing in a sharper form.
+- **The last two years are visually quarantined.** In share mode only, the final two years are dimmed
+  under a translucent veil with a dashed boundary and a "recent · undercounted" marker, and the
+  caption says outright *don't read the shaded years*. The veil is share-only because that is where
+  the distortion is dangerous; in count mode the same undercount is obvious from the falling bars and
+  needs no veil.
+- **Smooth, legible transition.** The SVG was refactored from rebuild-on-render to a persistent
+  skeleton so switching modes morphs the area paths (450 ms) and fades the veil, rather than flashing.
+  Axes update immediately (no tick interpolation between the 0–120 K and 0–100 % scales, which would
+  look broken). Verified: all 18 source × strictness × view combinations render with zero console
+  errors.

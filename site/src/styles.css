@@ -94,6 +94,8 @@ section { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
   border-left: 2px solid var(--line);
   padding-left: 12px;
 }
+.caption.ts-warn { border-left-color: var(--accent); color: var(--text-dim); }
+.caption.ts-warn strong { color: var(--text); }
 
 /* ---------- hero ---------- */
 .eyebrow {
@@ -256,6 +258,8 @@ section { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
 
 /* ---------- slope ---------- */
 .slope-controls { display: flex; gap: 10px; align-items: center; margin-bottom: 14px; flex-wrap: wrap; }
+.ts-controls { display: flex; gap: 10px; align-items: center; margin-bottom: 14px; flex-wrap: wrap; }
+.ts-legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; font-size: 0.8rem; color: var(--text-dim); }
 .slope-holder, .ts-holder, .map-holder { position: relative; }
 .slope-holder svg, .ts-holder svg { width: 100%; height: auto; display: block; overflow: visible; }
 .slope-holder .lane { fill: var(--text-faint); font-size: 12px; }

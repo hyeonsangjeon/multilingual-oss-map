@@ -176,3 +176,23 @@ an asymmetry-timeseries only if step 1 found a real trend.
 - **Verified** — build clean (`index--Ot0oPnh.js`); desktop + 375 px screenshots; 0 console errors;
   strictness toggle re-renders cells (RU·Python 25.4 %→22.9 % from all-3→≥1). Shots under session
   files `shots/20–22`.
+
+## Timeseries "Share of year" toggle (follow-up)
+
+Added a proportional view to the existing creation-year timeseries — a toggle, not a new section.
+
+- **Toggle shipped.** `site/src/timeseries.js` refactored to a persistent SVG with a local
+  `[Repositories] / [Share of year]` control (default = Repositories, mirrors slope.js's local-state
+  pattern; independent of source/strictness but re-renders on both). Share mode uses D3
+  `stackOffsetExpand` (front-end only — no re-aggregation); y-axis flips to 0–100 %. `#ts-controls`
+  added to `index.html`; `.ts-controls`/`.ts-legend`/`.caption.ts-warn` added to `styles.css`.
+- **Mode-specific caption + veil.** Share caption carries two warnings absent from the count caption:
+  *falling share ≠ decline* (switch back to counts to check), and *recent-year undercounting distorts
+  proportions more than counts* (the D13 density confound, README→issue coverage 7.5 %→1.4 %). In
+  share mode only, the last two years are dimmed under a veil with a dashed boundary + "recent ·
+  undercounted" marker and the caption says don't read the shaded years. Colours pinned across views.
+- **Verified** — build clean (`index-DReZpZOV.js`); 13-assertion Playwright check ALL PASS: every
+  year sums to 100 % (worst dev 2.2 × 10⁻¹⁶ / 171 blocks), colours identical count↔share (11 bands),
+  share y-axis 0–100 %, both caption warnings present, veil drawn in share / hidden in count, all 18
+  source × strictness × view combos render, 0 console errors. Desktop + 375 px shots `shots/30–33`.
+  Logged as decision D16.
