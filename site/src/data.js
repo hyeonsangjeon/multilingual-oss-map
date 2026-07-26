@@ -8,10 +8,11 @@ import langTotals from "../data/lang-totals.json";
 import langDetail from "../data/lang-detail.json";
 import timeseries from "../data/timeseries.json";
 import langStack from "../data/lang-stack.json";
+import mechanism from "../data/asymmetry-mechanism.json";
 import langRegions from "../data/lang-regions.json";
 import isoCountries from "../data/iso-countries.json";
 
-export { meta, langTotals, langDetail, timeseries, langStack, langRegions, isoCountries };
+export { meta, langTotals, langDetail, timeseries, langStack, mechanism, langRegions, isoCountries };
 
 // World country features (ids are ISO 3166-1 numeric strings, e.g. "076").
 export const countries = feature(worldTopo, worldTopo.objects.countries).features;

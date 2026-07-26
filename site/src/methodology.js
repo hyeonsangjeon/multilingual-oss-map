@@ -1,10 +1,20 @@
-import { meta } from "./data.js";
-import { commas, human } from "./format.js";
+import { meta, mechanism } from "./data.js";
+import { commas, human, pct1 } from "./format.js";
 
 export function mountMethodology() {
   const grid = document.getElementById("method-grid");
   const t = meta.totals;
+  const p3 = mechanism.paired["3"];
   const cards = [
+    {
+      warn: true,
+      h: "The asymmetry is compositional",
+      p: `A language ranking higher in issues than READMEs is not one repository documenting in ` +
+        `English and talking in a mother tongue. In repositories classified in both sources the two ` +
+        `languages match ${pct1(p3.agree / p3.paired)} (all-3); the gap comes from a separate ` +
+        `population — repositories with non-English issues but no non-English README classification ` +
+        `(English, absent, or unclassifiable). See “Where the asymmetry actually lives.”`,
+    },
     {
       warn: true,
       h: "A language map, not a country map",

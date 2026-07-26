@@ -205,3 +205,37 @@ single-hue violet scale cut into discrete bins** — never the map's colour syst
   dial moves.
 - **Caption guards against causal reading:** a hot cell reflects the overall popularity of a stack as
   much as any language-specific taste, so it must not be read as "language X causes stack Y."
+
+## D15 — Surface the asymmetry's mechanism on the site as a text card, not a chart
+
+D13 recorded (in this file only) *why* the README↔issue asymmetry exists: it is compositional, not a
+within-repository register switch. But the site's headline — "documented in English, discussed in a
+mother tongue" — was left to imply the stronger, wrong reading (one repo doing both). The mechanism
+had to move from the decision log onto the site so the narrative is precise.
+
+**Decision:** add a section, **"Where the asymmetry actually lives,"** directly under the asymmetry
+(slope) chart, built as a **text + numbers card, not a new chart**, and drive every figure from
+`scripts/aggregate.py` (`site/data/asymmetry-mechanism.json`) rather than hard-coding STEP 1's
+one-off query output.
+
+- **Why a text card, not a chart.** The finding is two scalars per language plus one global scalar —
+  a paired-agreement percentage and a per-language "no non-English README" share. A chart would
+  dress a handful of numbers as if they were a distribution; horizontal share bars + one big stat
+  read faster and don't invent structure. It also keeps the section light (no new D3 component) and
+  visually subordinate to the dumbbell it annotates, signalling "this refines the chart above."
+- **Two figures, both recomputed and strictness-responsive.** (a) In paired repos the dominant README
+  and issue languages match — 99.8 % at all-3, and the value *rises* with strictness (76.2 → 99.3 →
+  99.8) because stricter consensus removes CJK over-detection. (b) Per language, the share of
+  issue-classified repos with no non-English README (KO 73.4, JA 90.3, ZH 97.0 at all-3). Raw integer
+  counts are stored; the UI derives percentages, so the JSON stays byte-identical on re-run.
+- **Wording guard (the crux).** The dataset holds only non-English classifications (D-preamble / §1),
+  so "no non-English README classification" is **not** "English README." The card and caption say the
+  README is *English, absent, too short, or below the confidence cut — never asserted as English*,
+  and tie this explicitly to "English is excluded by design." Claiming "73 % write English READMEs"
+  would have been the exact over-reach this project refuses elsewhere.
+- **Refines, does not negate.** The copy states the headline still holds — these languages really are
+  discussed more than documented — while relocating the cause to a distinct *population* of
+  repositories. The section reads as a sharpening of the story, not a retraction.
+- **Methodology + limitations updated too:** `docs/methodology.md` §5 gives the calculation
+  definitions; a "The asymmetry is compositional" card was added to the on-site Method & limitations
+  grid (pulling the paired % from the same data, not hard-coded).

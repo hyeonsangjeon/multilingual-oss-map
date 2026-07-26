@@ -274,6 +274,49 @@ def main() -> int:
         stack_out["by_strictness"][str(k)] = per
     write_json("lang-stack.json", stack_out)
 
+    # ---- asymmetry-mechanism: where the README<->issue asymmetry actually lives ----
+    # Two facts behind the headline (see docs/decisions.md D13/D15):
+    #   1. Among repositories classified in BOTH a README and an issue (a "paired"
+    #      repo), how often is the dominant README language the same as the dominant
+    #      issue language? (One number per strictness — it is ~99.8%.)
+    #   2. For each language, of the repositories whose ISSUES are classified in it,
+    #      what share have NO non-English README classification at all? Because the
+    #      dataset holds only non-English labels, "no non-English README" means the
+    #      README is English, absent, too short, or below the confidence cut — never
+    #      asserted as English. This is where the asymmetry lives: outside the paired
+    #      set. Raw integer counts are stored; the UI derives the percentages, so the
+    #      output stays byte-identical on re-run.
+    log("aggregating asymmetry-mechanism (paired agreement + no-README share) ...")
+    mech_order = [r[0] for r in con.sql(
+        "SELECT lang, count(DISTINCT rid) c FROM agree WHERE source='issue' AND n>=3 "
+        "GROUP BY 1 ORDER BY c DESC, lang LIMIT 12").fetchall()]
+    mechanism = {"order": mech_order, "paired": {}, "issue_no_readme": {}}
+    for k in (1, 2, 3):
+        mech_rows = con.sql(
+            f"WITH iss AS (SELECT DISTINCT lang, rid FROM agree WHERE source='issue' AND n>={k}), "
+            f"rd AS (SELECT DISTINCT rid FROM agree WHERE source='readme' AND n>={k}) "
+            "SELECT i.lang, count(*) AS issue_repos, "
+            "count(*) FILTER (WHERE r.rid IS NULL) AS no_readme "
+            "FROM iss i LEFT JOIN rd r USING (rid) GROUP BY 1").fetchall()
+        by_lang = {lang: (int(ir), int(nr)) for lang, ir, nr in mech_rows}
+        mechanism["issue_no_readme"][str(k)] = [
+            {"lang": L, "name": lang_name(L),
+             "issue_repos": by_lang.get(L, (0, 0))[0],
+             "no_readme": by_lang.get(L, (0, 0))[1]}
+            for L in mech_order
+        ]
+        pr = con.sql(
+            f"WITH rd AS (SELECT rid, lang, row_number() OVER (PARTITION BY rid ORDER BY n DESC, lang) rn "
+            f"            FROM agree WHERE source='readme' AND n>={k}), "
+            f"iss AS (SELECT rid, lang, row_number() OVER (PARTITION BY rid ORDER BY n DESC, lang) rn "
+            f"        FROM agree WHERE source='issue' AND n>={k}), "
+            "rp AS (SELECT rid, lang FROM rd WHERE rn=1), "
+            "ip AS (SELECT rid, lang FROM iss WHERE rn=1), "
+            "paired AS (SELECT rp.lang AS rlang, ip.lang AS ilang FROM rp JOIN ip USING (rid)) "
+            "SELECT count(*), count(*) FILTER (WHERE rlang=ilang) FROM paired").fetchone()
+        mechanism["paired"][str(k)] = {"paired": int(pr[0]), "agree": int(pr[1])}
+    write_json("asymmetry-mechanism.json", mechanism)
+
     # ---- meta.json ----
     log("writing meta.json ...")
     names = {L: lang_name(L) for L in sorted(all_langs)}

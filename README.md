@@ -44,7 +44,11 @@ tells.
   with a README / issue / pull‑request source switch (watch the map redraw). Click a language — on
   the map, the legend, or the ranking — to spotlight only its regions and read its cross‑source
   ranks in a description card.
-- **Asymmetry chart** — a sortable dumbbell linking each language's README rank to its issue rank.
+- **Asymmetry chart** — a sortable dumbbell linking each language's README rank to its issue rank,
+  with a **"where the asymmetry actually lives"** card: in repos classified in both sources the two
+  languages match ~99.8 %, so the gap is compositional — repos with non‑English issues but *no
+  non‑English README classification* (English, absent, or unclassifiable), not one repo switching
+  registers.
 - **Language detail** — per‑source counts and ranks, the classifier‑agreement split, primary
   repository languages, and star / fork quantiles for any language.
 - **Growth over time** — repositories by creation year, by classified language.

@@ -87,6 +87,21 @@ published aggregate; this is documented as a known discrepancy, not silently rec
     warm hues converge under simulation; they are disambiguated by geography and the legend.
 - **Asymmetry (slope) chart** links a language's README rank to its issue rank. The gap — not the
   absolute position — is the point. It is sharpest at higher strictness.
+- **Where the asymmetry actually lives** decomposes that gap into two numbers, both computed in
+  `aggregate.py` for each strictness (no hard‑coded figures):
+  - **Paired agreement.** Among repositories classified in *both* a README and an issue (a "paired"
+    repo), the dominant README language — the one with the most agreeing classifiers, ties broken
+    alphabetically — equals the dominant issue language **99.8 %** of the time at all‑3
+    (189,292 / 189,747). Agreement *rises* with strictness (76.2 % → 99.3 % → 99.8 %) because
+    stricter consensus strips CJK over‑detection, the main source of within‑repo disagreement.
+  - **No‑non‑English‑README share.** For each language, of the repositories whose *issues* are
+    classified in it, the fraction with **no non‑English README classification** at strictness *k*
+    (Korean 73.4 %, Japanese 90.3 %, Chinese 97.0 % at all‑3). Because the dataset holds only
+    non‑English labels (§1, §4), this is deliberately phrased as *no non‑English README* — the README
+    may be English, absent, under ~20 characters, or below the 0.5 confidence cut; it is **never**
+    asserted to be English. This is the population the asymmetry lives in: repos that converse in a
+    mother tongue without a non‑English README cannot enter the paired set, so the gap is
+    compositional, not one repository switching registers over time (see decisions D13, D15).
 - **Star / fork figures are medians and high percentiles**, because the distribution is extremely
   long‑tailed: for most languages at least half of the repositories have **0 stars**.
 - **Time series** counts repositories by **creation year**. Recent years (especially the
