@@ -48,6 +48,9 @@ tells.
 - **Language detail** — per‑source counts and ranks, the classifier‑agreement split, primary
   repository languages, and star / fork quantiles for any language.
 - **Growth over time** — repositories by creation year, by classified language.
+- **Language × stack** — a natural‑language × programming‑language heatmap: for each language, the
+  share of its repositories written primarily in each stack (Russian → Python, Korean → Java,
+  Turkish → C#, Indonesian → PHP …), normalised per row so a large community can't dominate.
 - **Method & limitations** — the constraints below, surfaced in the UI.
 
 A **classifier‑strictness** dial (≥1 / 2‑of‑3 / all‑3, defaulting to **all‑3**) runs through every view as an honesty control.
@@ -57,12 +60,17 @@ A **classifier‑strictness** dial (≥1 / 2‑of‑3 / all‑3, defaulting to *
   <br /><sub><em>The asymmetry (dumbbell) chart at all‑3 — Korean makes the biggest jump: README <strong>5th</strong> → issue <strong>1st</strong>.</em></sub>
 </p>
 
+<p align="center">
+  <img src="docs/lang-stack.png" width="820" alt="Natural-language by programming-language heatmap at all-3 strictness: each row a language, each cell the share of that language's repositories written primarily in that stack. Russian leans Python (25%), Korean leans Java (19%), Turkish C# (12%), Indonesian PHP (12%), Vietnamese JavaScript (20%)." />
+  <br /><sub><em>Every language brings its own stack — within‑language share at all‑3. Russian leans <strong>Python</strong>, Korean <strong>Java</strong>, Turkish <strong>C#</strong>, Indonesian <strong>PHP</strong>.</em></sub>
+</p>
+
 ## What's here
 
 | Path | Description |
 | --- | --- |
 | `scripts/aggregate.py` | DuckDB pipeline: turns 80M+ classification rows into small JSON |
-| `site/` | Vanilla + Vite + D3 dashboard (choropleth map, slope chart, detail panel, timeseries) |
+| `site/` | Vanilla + Vite + D3 dashboard (choropleth map, slope chart, detail panel, timeseries, language×stack heatmap) |
 | `site/data/*.json` | Committed aggregate outputs (a few hundred KB) |
 | `docs/` | Schema notes, methodology, language→region mapping, self‑check, progress |
 
