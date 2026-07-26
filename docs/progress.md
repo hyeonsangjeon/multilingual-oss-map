@@ -153,3 +153,26 @@ its regions highlight", ideally with a description card.
   bullet updated to describe select→spotlight+card. Decision logged as D12.
 - **Verified** — build clean (`index-L7dmyTi9.js`); desktop + 375 px screenshots show the card;
   0 console errors. Shots saved under session files `hero-card/`.
+
+## Time-trend check (null) + language×stack heatmap (follow-up)
+
+Three-step request: (1) test whether the README↔issue asymmetry changes over creation-year,
+controlling for issue-density; (2) build a natural-language × programming-language heatmap; (3) build
+an asymmetry-timeseries only if step 1 found a real trend.
+
+- **STEP 1 — analysis only, NULL result (D13).** DuckDB over the raw parquet. Uncontrolled, Korean's
+  issue rank climbs to #1 for 2021–2025 repos, but README→has-issue coverage falls 7.5 %→1.4 %
+  across years (the density confound). On the paired subset (repos with both a non-English README and
+  issue at all-3), the per-year issue−README rank gap is **0 for KO/PT/ZH in every year**; within
+  paired repos the two languages agree 99.8 %. The asymmetry is compositional (73.4 % of Korean-issue
+  repos have English/absent READMEs), not a temporal trend. No code shipped; logged as decision D13.
+- **STEP 2 — heatmap shipped (`12fc9c6`, D14).** `scripts/aggregate.py` now emits
+  `site/data/lang-stack.json` (12 natural langs × 12 programming langs, counts + per-language totals,
+  strictness 1/2/3). `site/src/stack.js` renders a 12×12 grid: rows normalised to a within-language
+  share, a separate single-hue **violet discrete** scale (kept apart from the map's hue/lightness
+  rule), hover tooltip (language, stack, repo count, share), causal-warning caption. README-based and
+  strictness-responsive; independent of the source tab. Wired via data.js/main.js/index.html/styles.css.
+- **STEP 3 — not built (per step 1).** No asymmetry-timeseries; the null is recorded instead (D13).
+- **Verified** — build clean (`index--Ot0oPnh.js`); desktop + 375 px screenshots; 0 console errors;
+  strictness toggle re-renders cells (RU·Python 25.4 %→22.9 % from all-3→≥1). Shots under session
+  files `shots/20–22`.

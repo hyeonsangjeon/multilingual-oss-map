@@ -142,3 +142,66 @@ below stays populated (D10).
   pre‑select before capture makes the first and last settled states identical.
 
 Purely additive — counts, tooltips, the map encoding and the detail panel are unchanged.
+
+## D13 — Asymmetry over creation-year: no density-robust trend (a null result, kept as a null)
+
+Before building an "asymmetry over time" visualisation, we tested whether the README↔issue rank
+asymmetry (a language ranking higher in issues than in READMEs, e.g. Korean) actually *grows or
+shrinks* across repository creation years, for Korean, Portuguese and Chinese. The worry, stated
+up front, was a **spurious trend**: older repositories have had more time to accumulate issues, so
+issue classifications are denser for old repos than new ones, and that density gradient alone can
+masquerade as a changing asymmetry.
+
+To control for it we recomputed ranks on a **paired subset** — only repositories that have *both* a
+non-English README language and a non-English issue language at the default all-3 strictness — so
+every repo in the comparison contributes to both sides and the density gradient cancels.
+
+**Decision:** do **not** build an asymmetry-timeseries section. There is no meaningful
+density-robust trend to show, and "there is no trend" is itself a finding worth recording rather
+than dressing up.
+
+- **Uncontrolled, the trend looks real but is an artifact.** Ranking all repos by year, Korean's
+  *issue* rank climbs to #1 for repos created 2021–2025 while its README rank stays ~4–5 — an
+  apparently widening gap. But README→has-classified-issue coverage falls from **7.5 % (2013) to
+  1.4 % (2025)**: the exact density confound anticipated.
+- **Paired, the asymmetry disappears in every year.** Within repos classified in both sources, the
+  per-year gap between issue rank and README rank is **0 for KO, PT and ZH across all years** —
+  because within a paired repo the README and issue language agree **99.8 %** of the time
+  (189,292 / 189,747 paired repos).
+- **The asymmetry is compositional, not temporal.** It lives almost entirely in repos that have a
+  non-English issue but an **English or absent README** — **73.4 %** of Korean-issue repos
+  (Spanish 72.8 %, Russian 77.6 %, Japanese 90.3 %, Chinese 97.0 %). Those repos cannot enter the
+  paired subset by construction, which is why pairing removes the phenomenon. The asymmetry is a
+  property of *which repositories exist*, not of a within-repo behavioural shift over time.
+- **Scale of the check:** 10,134,400 non-English README repos and 801,799 non-English issue repos
+  at all-3; 189,747 paired. Analysis-only (DuckDB over the raw parquet); no code shipped for this
+  step.
+
+## D14 — Language × programming-language heatmap: README-based, within-language share, separate scale
+
+The natural-language × programming-language matrix ("every language brings its own stack") had three
+design forks worth pinning down.
+
+**Decision:** identify a repository's natural language from its **README** classification (the map's
+default lens), normalise each row to a **within-language share**, and render it with a **separate
+single-hue violet scale cut into discrete bins** — never the map's colour system.
+
+- **README, not per-source.** A tech stack (`primary_language_name`) is a repository attribute; it
+  does not change with who is writing the issue. Deriving the natural language from README gives one
+  stable community identity per repo and matches the map's default. The section therefore responds
+  to the strictness dial but is deliberately **independent of the source tab** (noted in its
+  caption), rather than implying the stack shifts by discussion language.
+- **Within-language share, not absolute counts.** Absolute repo counts would let the largest
+  communities (Portuguese, Spanish, Russian) dominate every column and wash out smaller ones. Each
+  row is normalised to that language's repositories with a known primary language, so the cell reads
+  "of language X's repos, this fraction use stack Y" — surfacing real signatures (Russian → Python
+  25 %, Korean → Java 19 %, Turkish → C# 12 %, Indonesian → PHP 12 %, Vietnamese → JavaScript 20 %).
+- **A separate discrete scale.** The map encodes hue = language and lightness = volume (D11). Reusing
+  it here would collide semantically, so the heatmap uses one hue (violet, absent from the map
+  palette) in six discrete steps. Discrete bins keep it categorically distinct and easier to read
+  than a continuous ramp.
+- **Axes fixed at all-3.** The top-12 natural languages and top-12 programming languages are chosen
+  once at the default strictness so the grid's shape is stable; only the cell values re-weight as the
+  dial moves.
+- **Caption guards against causal reading:** a hot cell reflects the overall popularity of a stack as
+  much as any language-specific taste, so it must not be read as "language X causes stack Y."
