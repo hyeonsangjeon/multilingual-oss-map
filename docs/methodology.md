@@ -5,6 +5,10 @@
 (CC0‑1.0). This document explains exactly what the numbers are, how they are produced, and — just as
 important — what they are **not**.
 
+> **Companion write-up:** [The README–Issue Language Gap in GitHub's 40-Million-Repo Dataset](https://medium.com/@wingnut0310/the-readme-issue-language-gap-in-githubs-40-million-repo-dataset-10227ce6772b)
+> is the narrative behind these methods — how the map was built, why *all-3* is the default, and the
+> null result that retired the "growing gap" story. This document is its technical companion.
+
 ## 1. The source data
 
 - **Dataset:** GitHub Multilingual Repositories Dataset (`github/multilingual-repositories`), released
@@ -111,7 +115,7 @@ published aggregate; this is documented as a known discrepancy, not silently rec
 ## 6. Reproduce
 
 ```bash
-bash scripts/download_data.sh     # raw parquet shards (~1.1 GB, git-ignored)
+bash scripts/download_data.sh     # 82 raw parquet shards (~1.1 GB, git-ignored)
 python3 scripts/aggregate.py      # rebuild site/data/*.json (deterministic)
 python3 scripts/build_regions.py  # rebuild language→region mapping
 cd site && npm ci && npm run build

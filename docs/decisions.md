@@ -278,3 +278,24 @@ absolute view keeps `stackOffsetNone`.
   Axes update immediately (no tick interpolation between the 0–120 K and 0–100 % scales, which would
   look broken). Verified: all 18 source × strictness × view combinations render with zero console
   errors.
+
+## D17 — Cross-link the Medium write-up and reconcile its published figures with the docs
+
+The project now has a narrative companion: *The README–Issue Language Gap in GitHub's 40-Million-Repo
+Dataset* (Medium, 2026-07-27). Once the README and the article point at each other, any figure that
+appears in both must agree — a mismatch is exactly what a careful reader notices.
+
+- **Bidirectional links, top and bottom.** The write-up is linked from the README hero (directly under
+  the live-demo link, so whichever surface a reader lands on, the other is one click away) and again
+  near the footer for readers who scroll. `docs/methodology.md` opens with a companion pointer, pairing
+  the "what/how" (methods) with the "why/story" (article).
+- **Published figures audited against the tree, not prose.** The article's pipeline claims were checked
+  against the actual repo: **82 parquet shards ≈ 1.1 GB** (41 classification + 41 metadata, confirmed on
+  disk and in `schema-notes.md`), **byte-identical reruns** (`sha256sum`), and **"a few hundred
+  kilobytes of JSON"** (the six `aggregate.py` outputs total ~188 KB — the README already used that
+  exact phrasing). No conflicting hard JSON size (e.g. a "0.4 MB") exists in either the article or the
+  docs; the 404 KB figure in D12 is the hero GIF, a separate artefact.
+- **Runtime stays approximate (~23 s) on purpose.** Wall-clock time is the one number the pipeline does
+  *not* make byte-reproducible — it is hardware-dependent (~23 s on the author's laptop, ~39 s in a
+  throttled shared box). We keep the article's "~23 s" as the representative figure and never bake a
+  machine-specific number into the docs, so the two documents stay consistent.

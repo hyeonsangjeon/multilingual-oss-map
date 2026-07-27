@@ -15,6 +15,8 @@ activity.
 
 🌍 **[Live demo → hyeonsangjeon.github.io/multilingual-oss-map](https://hyeonsangjeon.github.io/multilingual-oss-map/)**
 
+📝 **[Read the write-up → The README–Issue Language Gap in GitHub's 40-Million-Repo Dataset](https://medium.com/@wingnut0310/the-readme-issue-language-gap-in-githubs-40-million-repo-dataset-10227ce6772b)**
+
 > ⚠️ This is a **language map, not a country map.** Colors mark regions where a language is commonly
 > used — not where repositories are located. See [Data limitations](#data-limitations).
 >
@@ -89,7 +91,7 @@ A **classifier‑strictness** dial (≥1 / 2‑of‑3 / all‑3, defaulting to *
 ## Reproduce
 
 ```bash
-# 1. Download raw parquet shards (~1.1 GB, git-ignored)
+# 1. Download raw parquet shards (82 files, ~1.1 GB, git-ignored)
 bash scripts/download_data.sh
 # 2. Aggregate to site/data/*.json
 python3 scripts/aggregate.py
@@ -110,6 +112,8 @@ X", never "repositories that **use** language X". See [`docs/methodology.md`](do
 ---
 
 ⭐ **Star this repo if you find it useful — it helps others discover the dataset.**
+
+📝 **Read the write-up:** [The README–Issue Language Gap in GitHub's 40-Million-Repo Dataset](https://medium.com/@wingnut0310/the-readme-issue-language-gap-in-githubs-40-million-repo-dataset-10227ce6772b) — how the map was built, why *all-3* is the default, and the finding that changed my mental model.
 
 ## License
 
