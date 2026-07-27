@@ -290,7 +290,7 @@ def main() -> int:
     mech_order = [r[0] for r in con.sql(
         "SELECT lang, count(DISTINCT rid) c FROM agree WHERE source='issue' AND n>=3 "
         "GROUP BY 1 ORDER BY c DESC, lang LIMIT 12").fetchall()]
-    mechanism = {"order": mech_order, "paired": {}, "issue_no_readme": {}}
+    mechanism = {"order": mech_order, "paired": {}, "issue_no_readme": {}, "pair_counts": {}}
     for k in (1, 2, 3):
         mech_rows = con.sql(
             f"WITH iss AS (SELECT DISTINCT lang, rid FROM agree WHERE source='issue' AND n>={k}), "
@@ -315,6 +315,34 @@ def main() -> int:
             "paired AS (SELECT rp.lang AS rlang, ip.lang AS ilang FROM rp JOIN ip USING (rid)) "
             "SELECT count(*), count(*) FILTER (WHERE rlang=ilang) FROM paired").fetchone()
         mechanism["paired"][str(k)] = {"paired": int(pr[0]), "agree": int(pr[1])}
+
+        # Per-language circle counts for the Venn view: README-primary repos (A),
+        # issue-primary repos (B) and their intersection (both), all from the SAME
+        # primary-language definition as `paired` above so both <= A and both <= B
+        # hold exactly (the diagram's circles stay geometrically valid).
+        pc_rows = con.sql(
+            f"WITH rd AS (SELECT rid, lang, row_number() OVER (PARTITION BY rid ORDER BY n DESC, lang) rn "
+            f"            FROM agree WHERE source='readme' AND n>={k}), "
+            f"iss AS (SELECT rid, lang, row_number() OVER (PARTITION BY rid ORDER BY n DESC, lang) rn "
+            f"        FROM agree WHERE source='issue' AND n>={k}), "
+            "rp AS (SELECT rid, lang FROM rd WHERE rn=1), "
+            "ip AS (SELECT rid, lang FROM iss WHERE rn=1), "
+            "ra AS (SELECT lang, count(*) c FROM rp GROUP BY 1), "
+            "ia AS (SELECT lang, count(*) c FROM ip GROUP BY 1), "
+            "ba AS (SELECT rp.lang lang, count(*) c FROM rp JOIN ip USING (rid) "
+            "       WHERE rp.lang=ip.lang GROUP BY 1) "
+            "SELECT coalesce(ra.lang, ia.lang) lang, coalesce(ra.c,0) readme, "
+            "       coalesce(ia.c,0) issue, coalesce(ba.c,0) AS \"both\" "
+            "FROM ra FULL OUTER JOIN ia ON ra.lang=ia.lang "
+            "LEFT JOIN ba ON coalesce(ra.lang, ia.lang)=ba.lang").fetchall()
+        pc_by = {lang: (int(rm), int(iss_), int(bo)) for lang, rm, iss_, bo in pc_rows}
+        mechanism["pair_counts"][str(k)] = [
+            {"lang": L, "name": lang_name(L),
+             "readme": pc_by.get(L, (0, 0, 0))[0],
+             "issue": pc_by.get(L, (0, 0, 0))[1],
+             "both": pc_by.get(L, (0, 0, 0))[2]}
+            for L in mech_order
+        ]
     write_json("asymmetry-mechanism.json", mechanism)
 
     # ---- meta.json ----
