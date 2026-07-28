@@ -58,6 +58,25 @@ function solveD(rA, rB, target) {
   return (lo + hi) / 2;
 }
 
+// A count label pulled outside its circle with a short leader + dot — the same
+// visual language as the "both = N" callout — so a small circle (e.g. the issue
+// side for Spanish/Portuguese/Russian/French) still shows its count instead of
+// dropping it. Used as the fallback when a slice is too small to hold text.
+function leaderLabel(dotX, dotY, labelX, anchor, title, count) {
+  labelX = anchor === "start"
+    ? Math.min(labelX, W - SIDE - 82)
+    : Math.max(labelX, SIDE + 82);
+  const dx = dotX.toFixed(1), dy = dotY.toFixed(1), lx = labelX.toFixed(1);
+  return (
+    `<line x1="${dx}" y1="${dy}" x2="${lx}" y2="${dy}" stroke="var(--text-dim)" stroke-width="1.2"/>` +
+    `<circle cx="${dx}" cy="${dy}" r="2.4" fill="var(--text)"/>` +
+    `<text x="${lx}" y="${dy}" class="v-out" text-anchor="${anchor}">` +
+      `<tspan x="${lx}" dy="-7">${title}</tspan>` +
+      `<tspan x="${lx}" dy="15">${count}</tspan>` +
+    `</text>`
+  );
+}
+
 function render(s) {
   const k = String(s.strictness);
   const pm = pairMap(k);
@@ -99,21 +118,22 @@ function render(s) {
         `fill="${README_C}" fill-opacity="0.5" stroke="${README_C}" stroke-width="2"/>` +
       `<circle class="vc" data-r="issue" cx="${cxB.toFixed(1)}" cy="${cy.toFixed(1)}" r="${rB.toFixed(1)}" ` +
         `fill="${ISSUE_C}" fill-opacity="0.5" stroke="${ISSUE_C}" stroke-width="2"/>` +
-      // interior counts (only when the slice is big enough to hold text)
+      // "README only" — inside when the cyan circle has room, else a left-side callout
       (showRA
         ? `<text x="${(cxA - rA * 0.32).toFixed(1)}" y="${cy.toFixed(1)}" class="v-in" text-anchor="middle">` +
           `<tspan x="${(cxA - rA * 0.32).toFixed(1)}" dy="${showRAsub ? -10 : -2}">README only</tspan>` +
           `<tspan x="${(cxA - rA * 0.32).toFixed(1)}" dy="16">${commas(rAi)}</tspan>` +
           (showRAsub ? `<tspan x="${(cxA - rA * 0.32).toFixed(1)}" dy="15" class="v-in-note">no classified issue</tspan>` : "") +
           `</text>`
-        : "") +
+        : leaderLabel(cxA - rA, cy, cxA - rA - 18, "end", "README only", commas(rAi))) +
+      // "issues only" — inside when the amber circle has room, else a right-side callout
       (showIO
         ? `<text x="${(cxB + rB * 0.34).toFixed(1)}" y="${cy.toFixed(1)}" class="v-in v-in-dark" text-anchor="middle">` +
           `<tspan x="${(cxB + rB * 0.34).toFixed(1)}" dy="${showIOsub ? -10 : -2}">issues only</tspan>` +
           `<tspan x="${(cxB + rB * 0.34).toFixed(1)}" dy="16">${commas(iOnly)}</tspan>` +
           (showIOsub ? `<tspan x="${(cxB + rB * 0.34).toFixed(1)}" dy="15" class="v-in-note v-in-note-dark">no classified README</tspan>` : "") +
           `</text>`
-        : "") +
+        : leaderLabel(cxB + rB, cy, cxB + rB + 18, "start", "issues only", commas(iOnly))) +
       // header row — corners are always clear of the circles (TOP reserves the band)
       `<text x="${SIDE}" y="20" class="v-top" fill="${README_C}" text-anchor="start">` +
         `<tspan x="${SIDE}">${e.name} README</tspan>` +

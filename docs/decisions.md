@@ -332,3 +332,8 @@ repos that *do* have a classified issue, **100.0 % are Korean** — the ~100 % (
   enter the overlap, so README ⇒ issues reads only 5.0 % while agreement inside the overlap stays ~100 %."
 - **Verified** across all eight language chips at desktop and 375 px, 0 console errors; the card now reads
   coherently on its own.
+- **Follow-up — every count is always shown.** When a circle is too small to hold its label (the issue
+  side for Spanish/Portuguese/Russian/French, where README repos outnumber issue repos ~20:1), the
+  "issues only" / "README only" count is no longer dropped: it is pulled outside on a short leader + dot,
+  the same visual language as the "both = N" callout. All three numbers (README only / issues only / both)
+  now appear for all eight languages at both widths.
