@@ -9,7 +9,8 @@
 (CC0-1.0), it shows *what languages open source collaboration actually happens in* across 40M+
 repositories.
 
-The finding: many communities **write their README in English but discuss in their mother tongue.**
+The finding: many communities **discuss in their mother tongue even when their README isn't in it** —
+the README is English, absent, or too short to classify.
 The centrepiece is a choropleth **language map** of non‑English README, issue, and pull‑request
 activity.
 
