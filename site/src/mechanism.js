@@ -50,7 +50,7 @@ function render(s) {
       `<p class="mech-note">The two registers do not split inside a repository. When a project's ` +
       `README is labelled non-English, its issues almost always match it — ` +
       `<span class="num">${commas(paired.agree)}</span> of <span class="num">${commas(paired.paired)}</span> ` +
-      `paired repositories.</p>` +
+      `paired repositories. This is the overlap where the two circles meet in the diagram above.</p>` +
     `</div>` +
     `<div class="mech-card">` +
       `<h3 class="mech-card-h">So where does it come from?</h3>` +

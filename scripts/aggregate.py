@@ -317,9 +317,12 @@ def main() -> int:
         mechanism["paired"][str(k)] = {"paired": int(pr[0]), "agree": int(pr[1])}
 
         # Per-language circle counts for the Venn view: README-primary repos (A),
-        # issue-primary repos (B) and their intersection (both), all from the SAME
-        # primary-language definition as `paired` above so both <= A and both <= B
-        # hold exactly (the diagram's circles stay geometrically valid).
+        # issue-primary repos (B), their intersection (both) and — crucial for reading
+        # the diagram honestly — readme_no_issue: README-primary repos that have NO
+        # issue classification at all. Those inflate the README circle but can never
+        # enter the overlap, which is why P(issue|readme) looks tiny while agreement
+        # *inside* the overlap is ~100%. All from the SAME primary-language definition
+        # as `paired`, so both <= readme and both <= issue hold exactly.
         pc_rows = con.sql(
             f"WITH rd AS (SELECT rid, lang, row_number() OVER (PARTITION BY rid ORDER BY n DESC, lang) rn "
             f"            FROM agree WHERE source='readme' AND n>={k}), "
@@ -330,17 +333,21 @@ def main() -> int:
             "ra AS (SELECT lang, count(*) c FROM rp GROUP BY 1), "
             "ia AS (SELECT lang, count(*) c FROM ip GROUP BY 1), "
             "ba AS (SELECT rp.lang lang, count(*) c FROM rp JOIN ip USING (rid) "
-            "       WHERE rp.lang=ip.lang GROUP BY 1) "
+            "       WHERE rp.lang=ip.lang GROUP BY 1), "
+            "na AS (SELECT rp.lang lang, count(*) FILTER (WHERE ip.lang IS NULL) c "
+            "       FROM rp LEFT JOIN ip USING (rid) GROUP BY rp.lang) "
             "SELECT coalesce(ra.lang, ia.lang) lang, coalesce(ra.c,0) readme, "
-            "       coalesce(ia.c,0) issue, coalesce(ba.c,0) AS \"both\" "
+            "       coalesce(ia.c,0) issue, coalesce(ba.c,0) AS \"both\", coalesce(na.c,0) readme_no_issue "
             "FROM ra FULL OUTER JOIN ia ON ra.lang=ia.lang "
-            "LEFT JOIN ba ON coalesce(ra.lang, ia.lang)=ba.lang").fetchall()
-        pc_by = {lang: (int(rm), int(iss_), int(bo)) for lang, rm, iss_, bo in pc_rows}
+            "LEFT JOIN ba ON coalesce(ra.lang, ia.lang)=ba.lang "
+            "LEFT JOIN na ON coalesce(ra.lang, ia.lang)=na.lang").fetchall()
+        pc_by = {r[0]: (int(r[1]), int(r[2]), int(r[3]), int(r[4])) for r in pc_rows}
         mechanism["pair_counts"][str(k)] = [
             {"lang": L, "name": lang_name(L),
-             "readme": pc_by.get(L, (0, 0, 0))[0],
-             "issue": pc_by.get(L, (0, 0, 0))[1],
-             "both": pc_by.get(L, (0, 0, 0))[2]}
+             "readme": pc_by.get(L, (0, 0, 0, 0))[0],
+             "issue": pc_by.get(L, (0, 0, 0, 0))[1],
+             "both": pc_by.get(L, (0, 0, 0, 0))[2],
+             "readme_no_issue": pc_by.get(L, (0, 0, 0, 0))[3]}
             for L in mech_order
         ]
     write_json("asymmetry-mechanism.json", mechanism)

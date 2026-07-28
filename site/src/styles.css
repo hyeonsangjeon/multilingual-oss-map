@@ -395,6 +395,8 @@ section { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
 .venn-svg .v-top { font-size: 14px; font-weight: 700; }
 .venn-svg .v-in { font-size: 12.5px; font-weight: 700; fill: #04121a; }
 .venn-svg .v-in-dark { fill: #241a02; }
+.venn-svg .v-in-note { font-size: 9.5px; font-weight: 600; fill: #0c2733; opacity: 0.82; }
+.venn-svg .v-in-note-dark { fill: #3a2c08; }
 .venn-svg .v-both { font-size: 13px; font-weight: 700; fill: var(--text); }
 .venn-svg .vc { cursor: default; }
 .venn-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; justify-content: center; }
@@ -402,6 +404,7 @@ section { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
 .venn-leg-row { display: flex; align-items: flex-start; gap: 9px; font-size: 0.9rem; color: var(--text); line-height: 1.45; }
 .venn-leg-row strong { font-variant-numeric: tabular-nums; }
 .venn-sw { width: 13px; height: 13px; border-radius: 3px; flex: none; margin-top: 3px; }
+.venn-sw-both { background: linear-gradient(90deg, #4cc9f0 0%, #4cc9f0 42%, #ffb703 58%, #ffb703 100%); }
 .venn-cap { font-size: 0.83rem; color: var(--text-dim); line-height: 1.55; margin: 12px 0 0; }
 .venn-cap strong { color: var(--text); font-variant-numeric: tabular-nums; }
 

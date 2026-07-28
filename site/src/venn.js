@@ -67,6 +67,10 @@ function render(s) {
   const rAi = A - both, iOnly = B - both;
   const pRi = A ? both / A : 0; // README => issue  (small)
   const pIr = B ? both / B : 0; // issue  => README (larger)
+  const noIssue = e.readme_no_issue || 0;                 // README repos with NO classified issue
+  const withIssue = Math.max(A - noIssue, 0);             // README repos that DO have a classified issue
+  const overlapAgree = withIssue ? both / withIssue : 0;  // agreement INSIDE the overlap (~100%)
+  const pNoIssue = A ? noIssue / A : 0;                   // share of README circle that can't reach the overlap
 
   // area-proportional geometry in unit space, then scaled to fit
   const rAu = Math.sqrt(A / Math.PI), rBu = Math.sqrt(B / Math.PI);
@@ -84,6 +88,8 @@ function render(s) {
 
   const showRA = rA > 46; // room for an interior "README only" count
   const showIO = rB > 42;
+  const showRAsub = rA > 68; // extra room for the "no classified issue" descriptor
+  const showIOsub = rB > 68;
 
   const svg =
     `<svg class="venn-svg" viewBox="0 0 ${W} ${H}" role="img" ` +
@@ -96,13 +102,17 @@ function render(s) {
       // interior counts (only when the slice is big enough to hold text)
       (showRA
         ? `<text x="${(cxA - rA * 0.32).toFixed(1)}" y="${cy.toFixed(1)}" class="v-in" text-anchor="middle">` +
-          `<tspan x="${(cxA - rA * 0.32).toFixed(1)}" dy="-2">README only</tspan>` +
-          `<tspan x="${(cxA - rA * 0.32).toFixed(1)}" dy="16">${commas(rAi)}</tspan></text>`
+          `<tspan x="${(cxA - rA * 0.32).toFixed(1)}" dy="${showRAsub ? -10 : -2}">README only</tspan>` +
+          `<tspan x="${(cxA - rA * 0.32).toFixed(1)}" dy="16">${commas(rAi)}</tspan>` +
+          (showRAsub ? `<tspan x="${(cxA - rA * 0.32).toFixed(1)}" dy="15" class="v-in-note">no classified issue</tspan>` : "") +
+          `</text>`
         : "") +
       (showIO
         ? `<text x="${(cxB + rB * 0.34).toFixed(1)}" y="${cy.toFixed(1)}" class="v-in v-in-dark" text-anchor="middle">` +
-          `<tspan x="${(cxB + rB * 0.34).toFixed(1)}" dy="-2">issues only</tspan>` +
-          `<tspan x="${(cxB + rB * 0.34).toFixed(1)}" dy="16">${commas(iOnly)}</tspan></text>`
+          `<tspan x="${(cxB + rB * 0.34).toFixed(1)}" dy="${showIOsub ? -10 : -2}">issues only</tspan>` +
+          `<tspan x="${(cxB + rB * 0.34).toFixed(1)}" dy="16">${commas(iOnly)}</tspan>` +
+          (showIOsub ? `<tspan x="${(cxB + rB * 0.34).toFixed(1)}" dy="15" class="v-in-note v-in-note-dark">no classified README</tspan>` : "") +
+          `</text>`
         : "") +
       // header row — corners are always clear of the circles (TOP reserves the band)
       `<text x="${SIDE}" y="20" class="v-top" fill="${README_C}" text-anchor="start">` +
@@ -125,7 +135,8 @@ function render(s) {
     `<button type="button" class="chip${c.lang === L ? " active" : ""}" data-l="${c.lang}">${c.name}</button>`
   ).join("");
 
-  const gap = pIr ? 1 - pIr : 0; // share of issue-lang repos with no non-English README
+  const inr = mechanism.issue_no_readme[k].find((x) => x.lang === L);
+  const pNoReadme = inr && inr.issue_repos ? inr.no_readme / inr.issue_repos : (pIr ? 1 - pIr : 0);
   const pairedK = mechanism.paired[k];
   const agree = pairedK.paired ? pairedK.agree / pairedK.paired : 0;
 
@@ -139,16 +150,22 @@ function render(s) {
       `<div class="venn-chips">${chips}</div>` +
       `<div class="venn-legend">` +
         `<div class="venn-leg-row"><span class="venn-sw" style="background:${README_C}"></span>` +
-          `<span>The overlap is only <strong>${pct1(pRi)}</strong> of the ${e.name} README circle \u2014 ` +
-          `\u201c${e.name} README \u21d2 ${e.name} issues\u201d holds just ${pct1(pRi)}.</span></div>` +
+          `<span>\u201c${e.name} README \u21d2 ${e.name} issues\u201d holds just <strong>${pct1(pRi)}</strong> ` +
+          `\u2014 of all ${commas(A)} ${e.name}-README repos, and <strong>${pct1(pNoIssue)}</strong> of those have ` +
+          `no classified issue, so they can never reach the overlap.</span></div>` +
         `<div class="venn-leg-row"><span class="venn-sw" style="background:${ISSUE_C}"></span>` +
-          `<span>but <strong>${pct1(pIr)}</strong> of the ${e.name} issue circle \u2014 ` +
-          `\u201c${e.name} issues \u21d2 ${e.name} README\u201d holds ${pct1(pIr)}.</span></div>` +
+          `<span>\u201c${e.name} issues \u21d2 ${e.name} README\u201d holds <strong>${pct1(pIr)}</strong> ` +
+          `\u2014 of all ${commas(B)} ${e.name}-issue repos, and <strong>${pct1(pNoReadme)}</strong> of those have ` +
+          `no non-English README.</span></div>` +
+        `<div class="venn-leg-row"><span class="venn-sw venn-sw-both"></span>` +
+          `<span><strong>Inside the overlap</strong> \u2014 repos classified on both surfaces \u2014 the two languages ` +
+          `agree <strong>${pct1(overlapAgree)}</strong> for ${e.name} (<strong>${pct1(agree)}</strong> across all ` +
+          `languages). This is the paired-match figure.</span></div>` +
       `</div>` +
-      `<p class="venn-cap">When a repository is non-English on <strong>both</strong> surfaces the two ` +
-        `languages match ${pct1(agree)}. The asymmetry is not one repo switching registers \u2014 it is that ` +
-        `<strong>${pct1(gap)}</strong> of ${e.name}-issue repositories have no non-English README at all, so ` +
-        `they sit in the amber circle without ever entering the overlap.</p>` +
+      `<p class="venn-cap">Both figures are correct because their denominators differ: a repository whose issues ` +
+        `are never classified still counts inside the ${e.name} README circle but can never enter the overlap, so ` +
+        `\u201cREADME \u21d2 issues\u201d reads only <strong>${pct1(pRi)}</strong> while agreement <em>inside</em> ` +
+        `the overlap stays at <strong>${pct1(overlapAgree)}</strong>.</p>` +
     `</div>`;
 
   wireTips(holder, e);

@@ -299,3 +299,36 @@ appears in both must agree — a mismatch is exactly what a careful reader notic
   *not* make byte-reproducible — it is hardware-dependent (~23 s on the author's laptop, ~39 s in a
   throttled shared box). We keep the article's "~23 s" as the representative figure and never bake a
   machine-specific number into the docs, so the two documents stay consistent.
+
+## D18 — Reconcile the Venn's two fractions (5 % vs 99.8 %) with explicit denominators
+
+The "Where the asymmetry actually lives" card puts two correct numbers side by side that *look*
+contradictory to a reader — a confusion that actually surfaced when someone quoted the site:
+
+- **"Korean README ⇒ Korean issues holds just 5.0 %"** — numerator `both` = 34,078, denominator = **all
+  678,605 Korean-README repos**.
+- **"When a repository is non-English on both surfaces the two languages match 99.8 %"** — numerator
+  189,292, denominator = **189,747 repos classified on both surfaces (global)**.
+
+Both are right; the denominators simply differ. Verified in `scripts/aggregate.py` against `data-raw/`:
+of the 644,527 Korean "README only" repos, **644,522 (100.0 %) have no classified issue at all** — only
+**5** carry a different non-English issue. So the README circle is huge almost entirely because 95 % of
+Korean-README repos have *no classified issue*; those repos land in the README circle but can **never**
+enter the overlap (the overlap needs a classified issue on both surfaces). Among the 34,083 Korean-README
+repos that *do* have a classified issue, **100.0 % are Korean** — the ~100 % (per-language) / 99.8 %
+(global) agreement is the fraction *inside* the overlap. The values are correct; the fix is presentation.
+
+- **Values unchanged — labels made honest.** `aggregate.py` now emits `readme_no_issue` per language in
+  `pair_counts`. `venn.js` reads it and states each denominator inline: the cyan row names *all N
+  README repos* and notes the share with no classified issue; the amber row names *all N issue repos*
+  and its no-non-English-README share; a third **overlap** row (gradient swatch) reports agreement
+  *inside* the overlap — per-language (~100 % KO, 99.9 % JA, 99.8 % ZH) and the 99.8 % global
+  paired-match figure, so the two numbers can no longer read as a contradiction.
+- **The diagram carries the point too.** The "README only" slice gets a "no classified issue" descriptor
+  (and "issues only" a symmetric "no classified README" when the circle has room), and `mechanism.js`'s
+  big-stat note now says the 99.8 % *is the overlap where the two circles meet in the diagram above*.
+- **One-sentence reconciliation caption.** "Both figures are correct because their denominators differ:
+  a repository whose issues are never classified still counts inside the README circle but can never
+  enter the overlap, so README ⇒ issues reads only 5.0 % while agreement inside the overlap stays ~100 %."
+- **Verified** across all eight language chips at desktop and 375 px, 0 console errors; the card now reads
+  coherently on its own.
