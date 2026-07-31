@@ -72,6 +72,24 @@ A **classifier‑strictness** dial (≥1 / 2‑of‑3 / all‑3, defaulting to *
   <br /><sub><em>Every language brings its own stack — within‑language share at all‑3. Russian leans <strong>Python</strong>, Korean <strong>Java</strong>, Turkish <strong>C#</strong>, Indonesian <strong>PHP</strong>.</em></sub>
 </p>
 
+## Design & decisions
+
+Want the *why* behind the map, not just the *what*? Every non‑obvious call — the default
+strictness, how English is handled, how repositories are counted — is logged with its rationale in
+**[`docs/decisions.md`](docs/decisions.md)** (D1–D18). Three artifacts already in this repo answer
+the questions readers ask most:
+
+| Question | Answered by |
+| --- | --- |
+| **What does the map actually do?** | the [animated hero](docs/hero-loop.gif) at the top — pick a language, only its regions light up, with its README / issue / pull‑request ranks |
+| **Where does the README↔issue asymmetry actually live?** | the [Korean README↔issue **Venn**](docs/venn-korean.png) below — why *5 %* and *99.8 %* aren't a contradiction |
+| **Why *all‑3* by default? Why exclude English? Why count per (source × strictness)?** | the decision log **[`docs/decisions.md`](docs/decisions.md)** — see D9, D4, D5 |
+
+<p align="center">
+  <img src="docs/venn-korean.png" width="820" alt="Area-proportional Venn of Korean README vs issue classifications at all-3 strictness: 678,605 Korean-README repos and 127,993 Korean-issue repos overlap in only 34,078; 644,527 are README-only and 93,915 issue-only" />
+  <br /><sub><em>The same 34,078 repos are <strong>5 % of Korean READMEs but 27 % of Korean issues</strong>: the README circle is huge mostly because ~95 % of Korean‑README repos have <em>no classified issue at all</em>, so they can never enter the overlap — where README and issue languages agree ~100 %. Both fractions are correct; their denominators simply differ (all‑3 consensus; the mechanism behind <a href="#what-you-can-explore">the asymmetry chart</a>, detailed in <a href="docs/decisions.md">D18</a>; also <a href="docs/venn-chinese.png">Chinese</a>, <a href="docs/venn-japanese.png">Japanese</a>).</em></sub>
+</p>
+
 ## What's here
 
 | Path | Description |
@@ -79,7 +97,7 @@ A **classifier‑strictness** dial (≥1 / 2‑of‑3 / all‑3, defaulting to *
 | `scripts/aggregate.py` | DuckDB pipeline: turns 80M+ classification rows into small JSON |
 | `site/` | Vanilla + Vite + D3 dashboard (choropleth map, slope chart, detail panel, timeseries, language×stack heatmap) |
 | `site/data/*.json` | Committed aggregate outputs (a few hundred KB) |
-| `docs/` | Schema notes, methodology, language→region mapping, self‑check, progress |
+| `docs/` | Schema notes, methodology, **design decisions** (`decisions.md`), language→region mapping, self‑check, progress |
 
 ## Data source
 

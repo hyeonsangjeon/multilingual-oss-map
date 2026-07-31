@@ -337,3 +337,25 @@ repos that *do* have a classified issue, **100.0 % are Korean** — the ~100 % (
   "issues only" / "README only" count is no longer dropped: it is pulled outside on a short leader + dot,
   the same visual language as the "both = N" callout. All three numbers (README only / issues only / both)
   now appear for all eight languages at both widths.
+
+## D19 — Surface the design rationale from the README Overview (decision log + Venn + hero)
+
+Repo traffic showed **`docs/decisions.md` as the top interest path after the Overview** (5 views / 5
+unique, ~+30 weekly), yet the decision log — and `docs/venn-korean.png` — were **not linked anywhere
+in the README**, and the "What's here" `docs/` row didn't even mention decisions. So the most-wanted
+"why" content was undiscoverable from the landing page. **Decision:** add a compact **"Design &
+decisions"** section to the README that connects the three existing artifacts by the *question each
+answers*, anchored on the decision log:
+
+- **`docs/hero-loop.gif` → "What does the map actually do?"** (already embedded as the hero; now named
+  as the answer to that question).
+- **`docs/venn-korean.png` → "Where does the README↔issue asymmetry actually live?"** — embedded (it
+  was orphaned since the KO/ZH/JA PNGs were committed) with a denominator-honest caption reconciling
+  the 5 % vs 99.8 % framing (see D18), plus links to the ZH/JA siblings.
+- **`docs/decisions.md` → "Why is it built this way?"** — named twice (lead sentence + table row),
+  citing D9 (all‑3 default), D4 (English excluded), D5 (per source × strictness) as concrete examples.
+
+Also added `decisions.md` to the "What's here" `docs/` row. **README/docs‑only — no `site/**` change,
+so no Pages redeploy** (per D2's docs-vs-build split). Rationale: navigation/honesty over aesthetics
+(§8) — point demand at the material that answers it; follows **D17**'s precedent of recording
+cross‑linking as a decision. Values and site behaviour unchanged.
