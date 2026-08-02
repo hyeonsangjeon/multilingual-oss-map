@@ -11,6 +11,11 @@ import { mountDetail } from "./detail.js";
 import { mountTimeseries } from "./timeseries.js";
 import { mountStack } from "./stack.js";
 import { mountMethodology } from "./methodology.js";
+import { applyInitialParams, scrollToDeepLink, initUrlSync } from "./permalink.js";
+
+// Read ?lang/?src/?strict before mounting so the first render already reflects a
+// shared deep link, then keep the URL in sync so any view is shareable.
+const initialParams = applyInitialParams();
 
 mountStrictness(document.getElementById("topbar-controls"), { compact: true });
 mountHero();
@@ -25,6 +30,9 @@ mountTimeseries();
 mountStack();
 mountMethodology();
 mountFooter();
+
+initUrlSync();
+scrollToDeepLink(initialParams);
 
 function mountFooter() {
   const f = document.getElementById("footer");

@@ -6,6 +6,7 @@ import { getState, setState, subscribe } from "./store.js";
 import { meta, langName, lookupTotal, langRegions } from "./data.js";
 import { hueForLang } from "./palette.js";
 import { human, ordinal, commas, SOURCE_LABEL } from "./format.js";
+import { buildShareControl } from "./share.js";
 
 let el;
 
@@ -87,4 +88,5 @@ function render(s) {
   el.querySelector(".sl-clear").addEventListener("click", () =>
     setState({ mapInteracted: false })
   );
+  el.appendChild(buildShareControl(lang));
 }

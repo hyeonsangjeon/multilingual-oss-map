@@ -1,6 +1,7 @@
 import { getState, setState, subscribe } from "./store.js";
 import { langDetail, lookupTotal, totalsFor, langRegions, meta } from "./data.js";
 import { commas, human, ordinal, pct, SOURCE_LABEL } from "./format.js";
+import { buildShareControl } from "./share.js";
 
 const AGREE_C = ["#9db8d0", "#57a9d8", "#1f9fdd"]; // exactly 1 / 2 / all 3
 const SOURCES = ["readme", "issue", "pull_request"];
@@ -132,6 +133,8 @@ function renderPanel(s) {
         ${starMarkup(dsrc)}
       </div>
     </div>`;
+
+  panel.querySelector(".detail-guide")?.after(buildShareControl(lang));
 }
 
 function agreeMarkup(agree) {

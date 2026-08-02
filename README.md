@@ -58,6 +58,9 @@ tells.
 - **Language × stack** — a natural‑language × programming‑language heatmap: for each language, the
   share of its repositories written primarily in each stack (Russian → Python, Korean → Java,
   Turkish → C#, Indonesian → PHP …), normalised per row so a large community can't dominate.
+- **Share any language** — every language has a deep link (`?lang=KO`) that opens the map focused on
+  it, and a **Share** button (Copy link · X · LinkedIn) whose URL unfurls with that language's own
+  social card showing its README / issue / pull‑request ranks. Ready‑made links live at `…/l/<code>/`.
 - **Method & limitations** — the constraints below, surfaced in the UI.
 
 A **classifier‑strictness** dial (≥1 / 2‑of‑3 / all‑3, defaulting to **all‑3**) runs through every view as an honesty control.
@@ -123,8 +126,10 @@ Full usage, the shields.io badge endpoint, and methodology →
 | Path | Description |
 | --- | --- |
 | `scripts/aggregate.py` | DuckDB pipeline: turns 80M+ classification rows into small JSON |
+| `scripts/gen_share_cards.py` | Build per‑language social cards (OG PNGs) + deep‑link/unfurl stubs into `site/public/` |
 | `site/` | Vanilla + Vite + D3 dashboard (choropleth map, slope chart, detail panel, timeseries, language×stack heatmap) |
 | `site/data/*.json` | Committed aggregate outputs (a few hundred KB) |
+| `site/public/og/`, `site/public/l/` | Generated per‑language share cards and `?lang=` unfurl stubs |
 | `tools/langgap/` | CLI + GitHub Action: detect your repo's README↔issue language gap and badge it |
 | `docs/` | Schema notes, methodology, **design decisions** (`decisions.md`), language→region mapping, self‑check, progress |
 
@@ -143,7 +148,9 @@ Full usage, the shields.io badge endpoint, and methodology →
 bash scripts/download_data.sh
 # 2. Aggregate to site/data/*.json
 python3 scripts/aggregate.py
-# 3. Run the dashboard
+# 3. (optional) Regenerate per-language social share cards + deep-link stubs (needs cairosvg)
+python3 scripts/gen_share_cards.py
+# 4. Run the dashboard
 cd site && npm install && npm run dev
 ```
 

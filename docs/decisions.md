@@ -406,3 +406,36 @@ the result in this project's landscape.
   issues, **73.4 %** gap, **99.8 %** paired); aligned/mixed/none paths; a live `--repo` run; `--json`,
   `--svg`, and Actions `--github` outputs. New top‑level `tools/` + a `workflow_dispatch` self‑check
   workflow; no `site/**` change, so no Pages redeploy (D2).
+
+## D22 — Per‑language share cards (OG images) + deep links, made to work on a static host
+
+The map had one canonical URL and no social preview, so every share — of *any* language — unfurled
+identically (or not at all) and interest couldn't compound. Added **per‑language deep links + social
+share cards** so a link to, say, Korean opens the map focused on Korean *and* unfurls with a
+Korean‑specific card (its README / issue / PR ranks).
+
+- **The static‑host constraint drives the design.** GitHub Pages is static and social crawlers
+  (X, LinkedIn, Slack, Facebook) do **not** run JS, so a SPA cannot set per‑language `og:*` at
+  runtime. Every language therefore ships a **pre‑rendered stub** `site/public/l/<code>/index.html`
+  carrying its own `og:image`/`og:title`/`twitter:*` (absolute URLs) plus a redirect into the app
+  deep link `../../?lang=<CODE>` — crawlers read the card, humans bounce straight into the map.
+- **Cards are generated, never hand‑drawn (D‑ethos).** `scripts/gen_share_cards.py` reads the same
+  committed `site/data/*.json` and emits a 1200×630 card per language (name, code chip in its map hue,
+  the asymmetry one‑liner, and README/issue/PR rank tiles) as SVG → **PNG via cairosvg** (crawlers need
+  raster, not SVG). Text is kept Latin/English (language names like "Korean") so it rasterises with the
+  always‑present DejaVu/Liberation fonts — no CJK font dependency. 14 story languages (top‑12 of each
+  source that has a map region) + a default card; re‑run after `aggregate.py`.
+- **Deep links + URL sync.** `site/src/permalink.js` parses `?lang` / `?src` / `?strict` before mount
+  (validating against the data), spotlights the language, scrolls to the map, and mirrors map focus back
+  to the address bar via `replaceState` (lang only once focused; `src`/`strict` only when non‑default),
+  so the bare landing URL stays clean while any focused view is copy‑pasteable.
+- **Share affordance.** `site/src/share.js` adds a Copy‑link · X · LinkedIn control to the map spotlight
+  and the language‑detail panel. It targets the **stub** URL (not `?lang=`) — derived from where the app
+  is served, so it is correct on Pages under `/multilingual-oss-map/` and locally — because only the stub
+  unfurls per‑language. Base `og:*`/`twitter:*` + `canonical` were also added to `index.html` (default
+  card) so the root and `?lang=` URLs still preview nicely.
+- **Verified:** `npm run build` copies `public/` → `dist/` (30 og files + 14 stubs + hub); all 15 PNGs
+  are exactly 1200×630; stubs serve real HTML (not the SPA fallback) with correct OG. Playwright across
+  8 checks — `?lang=` selects+spotlights+scrolls+syncs the URL, `/l/ko/` redirects to `?lang=KO`, share
+  controls present in spotlight + detail, desktop **and** 375px — all pass with **0 console errors**.
+  Touches `site/**`, so this **does** trigger a Pages redeploy (D2).

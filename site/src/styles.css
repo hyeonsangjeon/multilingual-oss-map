@@ -246,6 +246,51 @@ section { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
 .sl-take strong { color: var(--text); }
 .sl-hint { margin: 0; font-size: 0.76rem; color: var(--text-faint); line-height: 1.4; }
 
+/* ---------- per-language share control (spotlight + detail) ---------- */
+.share {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.share-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-right: 2px;
+}
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--bg-elev);
+  color: var(--text-dim);
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color 0.18s, color 0.18s, background 0.18s;
+}
+.share-btn:hover {
+  border-color: var(--accent2);
+  color: var(--accent2);
+  background: var(--bg-elev2);
+}
+.share-btn.ok {
+  border-color: var(--pos);
+  color: var(--pos);
+}
+.detail-panel .share {
+  margin: -6px 0 18px;
+}
+
 /* map + ranking on narrow screens (both shown, not either/or) */
 .map-bars { margin-top: 14px; border-top: 1px solid var(--line-soft); padding-top: 14px; }
 .bars-hint { font-size: 0.8rem; color: var(--text-faint); margin: 0 4px 10px; line-height: 1.4; }
