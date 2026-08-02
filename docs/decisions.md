@@ -1,5 +1,10 @@
 # Decision log
 
+> **[multilingual-oss-map](../README.md)** is an interactive language map of multilingual open source —
+> non‑English README, issue, and pull‑request activity across 40M+ GitHub repositories.
+> **New here?** Start at the **[repo Overview (README)](../README.md)** · [live demo](https://hyeonsangjeon.github.io/multilingual-oss-map/) · [methodology](methodology.md).
+> This file is the *why* behind those choices, in the order they were made.
+
 Records non-obvious decisions and their rationale, per spec §8 judgment priority:
 1) Hard constraints (§3) > 2) Honesty > 3) Performance > 4) Narrative > 5) Aesthetics.
 
@@ -359,3 +364,17 @@ Also added `decisions.md` to the "What's here" `docs/` row. **README/docs‑only
 so no Pages redeploy** (per D2's docs-vs-build split). Rationale: navigation/honesty over aesthetics
 (§8) — point demand at the material that answers it; follows **D17**'s precedent of recording
 cross‑linking as a decision. Values and site behaviour unchanged.
+
+## D20 — Orient deep-link visitors at the top of the decision log
+
+Repo traffic shows **`docs/decisions.md` drawing more *unique* document visitors than the Overview
+itself** (6 views / 6 uniques vs the README's 14 / 3), some arriving from off‑site (a Microsoft‑related
+referrer, 4 / 3) — i.e. readers **deep‑link straight here, bypassing the README**. A visitor landing on
+the log cold met only "spec §8 judgment priority" jargon: no statement of what the project is, no way
+back to the Overview. **Decision:** add a one‑paragraph orientation blockquote at the very top — a
+one‑line project purpose plus a short path back (repo Overview / README, live demo, methodology).
+Additive front‑matter only: the existing "Records non‑obvious decisions…" priority line, every D1–D19
+entry and its heading anchors, and the `docs/` structure are untouched, and the file carries no image
+links to disturb. This closes the loop D19 opened (Overview → log) with the return path (log →
+Overview); consistent with D17/D19 recording navigation as a decision. Docs‑only — no `site/**` change,
+so no Pages redeploy (D2).
