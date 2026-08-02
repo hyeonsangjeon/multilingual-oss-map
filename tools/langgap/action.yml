@@ -1,0 +1,65 @@
+name: "langgap — README ↔ issue language gap"
+description: >
+  Detect whether a repository documents in one language but is discussed in
+  another (the README ↔ issue language gap), place it in the 40M-repo
+  multilingual-oss-map landscape, and emit a badge.
+branding:
+  icon: globe
+  color: orange
+
+inputs:
+  repo:
+    description: "owner/name to analyze"
+    required: false
+    default: ${{ github.repository }}
+  strictness:
+    description: "classifier agreement to compare against: 1, 2, or 3 (all-3, default)"
+    required: false
+    default: "3"
+  issues-limit:
+    description: "how many most-commented issues to sample"
+    required: false
+    default: "50"
+  badge-svg:
+    description: "path to write a self-contained SVG badge (optional; e.g. docs/langgap.svg)"
+    required: false
+    default: ""
+  token:
+    description: "GitHub token used for the API"
+    required: false
+    default: ${{ github.token }}
+
+outputs:
+  status:
+    description: "gap | aligned | mixed | english_or_none"
+    value: ${{ steps.run.outputs.status }}
+  readme_language:
+    description: "detected README language (ISO 639-1, or empty)"
+    value: ${{ steps.run.outputs.readme_language }}
+  issue_language:
+    description: "detected dominant non-English issue language (ISO 639-1, or empty)"
+    value: ${{ steps.run.outputs.issue_language }}
+  badge_message:
+    description: "badge message text, e.g. 'EN · KO — gap'"
+    value: ${{ steps.run.outputs.badge_message }}
+
+runs:
+  using: composite
+  steps:
+    - name: Install detectors
+      shell: bash
+      run: python3 -m pip install --quiet -r "$GITHUB_ACTION_PATH/requirements.txt"
+    - name: Run langgap
+      id: run
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.token }}
+      run: |
+        args=(--repo "${{ inputs.repo }}"
+              --strictness "${{ inputs.strictness }}"
+              --issues-limit "${{ inputs.issues-limit }}"
+              --github)
+        if [ -n "${{ inputs.badge-svg }}" ]; then
+          args+=(--svg "${{ inputs.badge-svg }}")
+        fi
+        python3 "$GITHUB_ACTION_PATH/langgap.py" "${args[@]}"

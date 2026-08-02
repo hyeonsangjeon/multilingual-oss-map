@@ -90,6 +90,34 @@ the questions readers ask most:
   <br /><sub><em>The same 34,078 repos are <strong>5 % of Korean READMEs but 27 % of Korean issues</strong>: the README circle is huge mostly because ~95 % of Korean‑README repos have <em>no classified issue at all</em>, so they can never enter the overlap — where README and issue languages agree ~100 %. Both fractions are correct; their denominators simply differ (all‑3 consensus; the mechanism behind <a href="#what-you-can-explore">the asymmetry chart</a>, detailed in <a href="docs/decisions.md">D18</a>; also <a href="docs/venn-chinese.png">Chinese</a>, <a href="docs/venn-japanese.png">Japanese</a>).</em></sub>
 </p>
 
+## Try it on your own repo — `langgap`
+
+Does *your* project **document in one language but get discussed in another?**
+[`tools/langgap`](tools/langgap) is a small CLI + GitHub Action that detects your
+**README vs issue** language with the same multi-classifier consensus used here,
+then places you in the 40M-repo landscape and prints a badge.
+
+```bash
+pip install -r tools/langgap/requirements.txt
+python3 tools/langgap/langgap.py --repo <owner/name>
+```
+
+```text
+GAP — documented in English, discussed in Korean
+  · Korean: #1 in issues, #5 in READMEs (all-3)
+  · 73.4% of Korean-issue repos have no non-English README — you're in that gap
+```
+
+Add it to CI and drop a badge in your README:
+
+```yaml
+- uses: hyeonsangjeon/multilingual-oss-map/tools/langgap@main
+  with: { strictness: "3" }        # optional badge-svg: docs/langgap.svg
+```
+
+Full usage, the shields.io badge endpoint, and methodology →
+[`tools/langgap/README.md`](tools/langgap/README.md).
+
 ## What's here
 
 | Path | Description |
@@ -97,6 +125,7 @@ the questions readers ask most:
 | `scripts/aggregate.py` | DuckDB pipeline: turns 80M+ classification rows into small JSON |
 | `site/` | Vanilla + Vite + D3 dashboard (choropleth map, slope chart, detail panel, timeseries, language×stack heatmap) |
 | `site/data/*.json` | Committed aggregate outputs (a few hundred KB) |
+| `tools/langgap/` | CLI + GitHub Action: detect your repo's README↔issue language gap and badge it |
 | `docs/` | Schema notes, methodology, **design decisions** (`decisions.md`), language→region mapping, self‑check, progress |
 
 ## Data source

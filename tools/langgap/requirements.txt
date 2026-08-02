@@ -1,0 +1,9 @@
+# langgap core detectors — pure-Python, install anywhere.
+# Two classifiers give strictness up to 2; the tool still compares your result
+# against the all-3 (published-aggregate) landscape by default.
+lingua-language-detector>=1.3
+langid>=1.1.6
+
+# Optional third classifier for a true all-3 runtime consensus (matches the
+# dataset's fasttext/gcld3/lingua-py trio). Auto-used if importable:
+#   pip install fasttext-wheel

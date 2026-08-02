@@ -1,0 +1,26 @@
+name: langgap (self-check)
+
+# Manual, no-write demo: runs the langgap Action on this repo and prints the
+# README ↔ issue language report to the run summary. Safe to trigger anytime.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: read
+
+jobs:
+  langgap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - id: gap
+        uses: ./tools/langgap
+        with:
+          strictness: "3"
+      - name: Show outputs
+        shell: bash
+        run: |
+          echo "status         = ${{ steps.gap.outputs.status }}"
+          echo "readme_language= ${{ steps.gap.outputs.readme_language }}"
+          echo "issue_language = ${{ steps.gap.outputs.issue_language }}"
